@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+.venv/
+.localmind/
+*.sqlite*
+*.db*
+.DS_Store
+integrations/codex.localmind.toml
+integrations/mcp.localmind.json
+*.tmp

@@ -1,0 +1,103 @@
+{
+  "schema_version": "0.2",
+  "context_id": "ctx_demo_13",
+  "turn_id": "turn_demo_8",
+  "project_id": "demo_localmind",
+  "task_id": "demo_design",
+  "state_revision": 13,
+  "original_request": {
+    "event_id": "evt_current_8",
+    "text": "继续之前的本地记忆项目，先不要自动操作电脑。"
+  },
+  "current_goal": "设计每轮主动精简与补充上下文的本地记忆系统。",
+  "active_constraints": [
+    {
+      "event_id": "evt_current_8",
+      "memory_id": "mem_no_execution",
+      "text": "先不要自动操作电脑。",
+      "authority": "user_stated",
+      "scope": "task",
+      "status": "active",
+      "source_revision": 13,
+      "subject_key": "execution_mode",
+      "effective_revision": 13,
+      "source_event_ids": [
+        "evt_current_8"
+      ],
+      "origin_kind": "user_input",
+      "root_source_ids": [
+        "evt_current_8"
+      ],
+      "depends_on_ids": []
+    }
+  ],
+  "recent_key_messages": [
+    {
+      "event_id": "evt_goal_1",
+      "memory_id": null,
+      "text": "希望通过本地小模型或架构，让云端模型更理解我，并主动精简和补充上下文。",
+      "authority": "user_stated",
+      "scope": "project",
+      "status": "active",
+      "source_revision": 1,
+      "origin_kind": "user_input",
+      "root_source_ids": [
+        "evt_goal_1"
+      ],
+      "depends_on_ids": []
+    }
+  ],
+  "relevant_memories": [
+    {
+      "event_id": "evt_prior_design_2",
+      "memory_id": "mem_prior_runtime",
+      "text": "原方案含持久状态、证据和经验复用。",
+      "authority": "external",
+      "scope": "project",
+      "status": "active",
+      "source_revision": 2,
+      "origin_kind": "imported_source",
+      "root_source_ids": [
+        "evt_prior_design_2"
+      ],
+      "depends_on_ids": []
+    }
+  ],
+  "evidence_excerpts": [],
+  "uncertainties": [
+    "具体本地模型与当前客户端接入能力尚待实测。"
+  ],
+  "budget": {
+    "supplement_cap_estimated_tokens": 1800,
+    "supplement_cap_utf8_bytes": 12288,
+    "estimated_supplement_tokens": 900,
+    "actual_supplement_tokens": null,
+    "counter": "illustrative-not-measured",
+    "host_window_verified": false
+  },
+  "degraded_reason": null,
+  "capture_epoch": 1,
+  "pending_conflicts": [],
+  "information_needs": [
+    {
+      "key": "current_goal",
+      "status": "satisfied",
+      "source_event_ids": [
+        "evt_goal_1"
+      ]
+    },
+    {
+      "key": "execution_mode",
+      "status": "satisfied",
+      "source_event_ids": [
+        "evt_current_8"
+      ]
+    },
+    {
+      "key": "client_capabilities",
+      "status": "unknown",
+      "source_event_ids": [],
+      "reason": "尚未进行真实接口验证。"
+    }
+  ]
+}

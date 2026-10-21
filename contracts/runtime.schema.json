@@ -1,0 +1,1328 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:localmind:runtime:0.3",
+  "title": "LocalMind internal runtime contracts 0.3",
+  "description": "内部JSON形状契约；实际文档见docs/PROTOCOL.md。来源、授权、当前版本、依赖闭包、budget和生命周期仍须语义验证。Handoff仅预留；Checkpoint是本地存储契约，不宣称备份导入已实现。单独类型可使用#/$defs/Event等引用验证。",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/Event"
+    },
+    {
+      "$ref": "#/$defs/TaskState"
+    },
+    {
+      "$ref": "#/$defs/TurnRun"
+    },
+    {
+      "$ref": "#/$defs/ContextPacket"
+    },
+    {
+      "$ref": "#/$defs/Checkpoint"
+    },
+    {
+      "$ref": "#/$defs/Handoff"
+    }
+  ],
+  "$defs": {
+    "Scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "project_id",
+        "task_id",
+        "logical_session_id"
+      ],
+      "properties": {
+        "project_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "task_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "logical_session_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "SubjectRevision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "subject_key",
+        "scope_level",
+        "effective_revision"
+      ],
+      "properties": {
+        "subject_key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scope_level": {
+          "enum": [
+            "global",
+            "project",
+            "task"
+          ]
+        },
+        "effective_revision": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "Snapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scope",
+        "scope_revisions",
+        "subject_revisions",
+        "policy_revision",
+        "capture_epoch",
+        "deletion_epoch"
+      ],
+      "properties": {
+        "scope": {
+          "$ref": "#/$defs/Scope"
+        },
+        "scope_revisions": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "global",
+            "project",
+            "task"
+          ],
+          "properties": {
+            "global": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "project": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "task": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "subject_revisions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SubjectRevision"
+          }
+        },
+        "policy_revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "capture_epoch": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "deletion_epoch": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "Subject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "subject_key",
+        "value",
+        "scope_level",
+        "kind",
+        "source_event_ids",
+        "effective_revision",
+        "authority",
+        "status"
+      ],
+      "properties": {
+        "subject_key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "value": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scope_level": {
+          "enum": [
+            "global",
+            "project",
+            "task"
+          ]
+        },
+        "kind": {
+          "enum": [
+            "goal",
+            "requirement",
+            "decision",
+            "fact"
+          ]
+        },
+        "source_event_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        },
+        "effective_revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "authority": {
+          "enum": [
+            "user_stated",
+            "observed",
+            "inferred",
+            "imported"
+          ]
+        },
+        "status": {
+          "enum": [
+            "active",
+            "candidate",
+            "stale",
+            "contradicted",
+            "superseded",
+            "deleted",
+            "suppressed"
+          ]
+        },
+        "dependencies": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "scope_key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reference_event_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "ActiveConstraint": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Subject"
+        },
+        {
+          "properties": {
+            "authority": {
+              "const": "user_stated"
+            },
+            "status": {
+              "const": "active"
+            }
+          },
+          "required": [
+            "reference_event_id"
+          ]
+        }
+      ]
+    },
+    "Event": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "event_id",
+        "seq",
+        "scope",
+        "scope_level",
+        "actor",
+        "origin_kind",
+        "raw_content",
+        "content_hash",
+        "root_source_ids",
+        "status",
+        "occurred_at",
+        "ingested_at",
+        "dedupe_key",
+        "source_event_ids"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "0.3"
+        },
+        "event_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "seq": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "scope": {
+          "$ref": "#/$defs/Scope"
+        },
+        "scope_level": {
+          "enum": [
+            "global",
+            "project",
+            "task"
+          ]
+        },
+        "actor": {
+          "enum": [
+            "user",
+            "assistant",
+            "tool",
+            "system"
+          ]
+        },
+        "origin_kind": {
+          "enum": [
+            "user_input",
+            "assistant_output",
+            "tool_result",
+            "imported_source",
+            "generated_context"
+          ]
+        },
+        "raw_content": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "text": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "content_hash": {
+          "type": "string"
+        },
+        "root_source_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "parent_event_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "turn_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "generated_context_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "status": {
+          "enum": [
+            "active",
+            "deleted"
+          ]
+        },
+        "occurred_at": {
+          "type": "string",
+          "minLength": 1
+        },
+        "ingested_at": {
+          "type": "string",
+          "minLength": 1
+        },
+        "dedupe_key": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "effective": {
+          "type": "boolean"
+        },
+        "source_event_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "Excerpt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "event_id",
+        "actor",
+        "origin_kind",
+        "text",
+        "source_event_ids"
+      ],
+      "properties": {
+        "event_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "actor": {
+          "enum": [
+            "user",
+            "assistant",
+            "tool",
+            "system"
+          ]
+        },
+        "origin_kind": {
+          "enum": [
+            "user_input",
+            "assistant_output",
+            "tool_result",
+            "imported_source",
+            "generated_context"
+          ]
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_event_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        }
+      }
+    },
+    "MemoryExcerpt": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/EventMemoryExcerpt"
+        },
+        {
+          "$ref": "#/$defs/DerivedMemoryExcerpt"
+        }
+      ]
+    },
+    "Usage": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "按后端原样记录可观测统计；未知字段不填零。",
+      "additionalProperties": true
+    },
+    "PendingConflict": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scope",
+        "subject_keys",
+        "status",
+        "source_event_ids"
+      ],
+      "properties": {
+        "scope": {
+          "$ref": "#/$defs/Scope"
+        },
+        "subject_keys": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "status": {
+          "enum": [
+            "pending",
+            "unknown"
+          ]
+        },
+        "source_event_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "reason": {
+          "type": "string"
+        },
+        "subject_key": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "TaskState": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "scope",
+        "revision",
+        "subjects",
+        "pending_conflicts",
+        "last_result"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "0.3"
+        },
+        "scope": {
+          "$ref": "#/$defs/Scope"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "subjects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Subject"
+          }
+        },
+        "pending_conflicts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/PendingConflict"
+          }
+        },
+        "last_result": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Event"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "ContextPacket": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "context_id",
+        "turn_id",
+        "scope",
+        "snapshot",
+        "original_request",
+        "active_constraints",
+        "recent_key_messages",
+        "relevant_memories",
+        "evidence_excerpts",
+        "uncertainties",
+        "budget",
+        "dependency_checks",
+        "reference_anchors"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "0.3"
+        },
+        "context_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "turn_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scope": {
+          "$ref": "#/$defs/Scope"
+        },
+        "snapshot": {
+          "$ref": "#/$defs/Snapshot"
+        },
+        "original_request": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "event_id",
+            "text"
+          ],
+          "properties": {
+            "event_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "text": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "active_constraints": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ActiveConstraint"
+          }
+        },
+        "recent_key_messages": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Excerpt"
+          }
+        },
+        "relevant_memories": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MemoryExcerpt"
+          }
+        },
+        "evidence_excerpts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EvidenceExcerpt"
+          }
+        },
+        "uncertainties": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "budget": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "limit_utf8_bytes",
+            "actual_utf8_bytes",
+            "estimated_tokens",
+            "counter",
+            "actual_tokens",
+            "host_window_verified"
+          ],
+          "properties": {
+            "limit_utf8_bytes": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "actual_utf8_bytes": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "estimated_tokens": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "counter": {
+              "const": "utf8_bytes_div_3_estimate"
+            },
+            "actual_tokens": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "host_window_verified": {
+              "const": false
+            }
+          }
+        },
+        "dependency_checks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "subject_key",
+              "status",
+              "dependency_keys"
+            ],
+            "properties": {
+              "subject_key": {
+                "type": "string",
+                "minLength": 1
+              },
+              "status": {
+                "const": "complete"
+              },
+              "dependency_keys": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        },
+        "degraded_reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "selection_reasons": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "planner_usage": {
+          "$ref": "#/$defs/Usage"
+        },
+        "planner_latency_ms": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "reference_anchors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ReferenceAnchor"
+          }
+        }
+      }
+    },
+    "Message": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "role",
+        "content"
+      ],
+      "properties": {
+        "role": {
+          "enum": [
+            "system",
+            "user",
+            "assistant",
+            "tool"
+          ]
+        },
+        "content": {
+          "type": "string"
+        }
+      }
+    },
+    "TurnRun": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "turn_id",
+        "input_event_id",
+        "scope",
+        "snapshot",
+        "phase",
+        "freshness"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "0.3"
+        },
+        "turn_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "input_event_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scope": {
+          "$ref": "#/$defs/Scope"
+        },
+        "snapshot": {
+          "$ref": "#/$defs/Snapshot"
+        },
+        "phase": {
+          "enum": [
+            "received",
+            "compiled",
+            "sent",
+            "completed",
+            "failed",
+            "cancelled",
+            "outcome_unknown"
+          ]
+        },
+        "lifecycle": {
+          "enum": [
+            "received",
+            "compiled",
+            "sent",
+            "completed",
+            "failed",
+            "cancelled",
+            "outcome_unknown"
+          ]
+        },
+        "freshness": {
+          "enum": [
+            "current",
+            "superseded",
+            "forgotten"
+          ]
+        },
+        "request_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "attempt_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "context_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "remote_thread_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "packet": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ContextPacket"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "messages": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Message"
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source_event_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "usage": {
+          "$ref": "#/$defs/Usage"
+        },
+        "error": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "outcome": {
+          "enum": [
+            "completed",
+            "captured",
+            "unknown",
+            "failed",
+            "forgotten",
+            "discarded_superseded",
+            "discarded_forgotten",
+            null
+          ]
+        },
+        "input_hash": {
+          "type": "string",
+          "minLength": 1
+        },
+        "created_at": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sent_at": {
+          "type": "string",
+          "minLength": 1
+        },
+        "completed_at": {
+          "type": "string",
+          "minLength": 1
+        },
+        "message_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "completed_event_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "result_hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "Checkpoint": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/CheckpointActive"
+        },
+        {
+          "$ref": "#/$defs/CheckpointForgotten"
+        }
+      ]
+    },
+    "Handoff": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol_version",
+        "handoff_id",
+        "implementation_status",
+        "parent_turn_id",
+        "goal",
+        "scope",
+        "allowed_read_scopes",
+        "capabilities",
+        "checkpoint_id",
+        "checkpoint_snapshot",
+        "constraints",
+        "source_event_ids",
+        "expected_artifact"
+      ],
+      "properties": {
+        "protocol_version": {
+          "const": "0.3"
+        },
+        "handoff_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "implementation_status": {
+          "const": "reserved"
+        },
+        "parent_turn_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "goal": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scope": {
+          "$ref": "#/$defs/Scope"
+        },
+        "allowed_read_scopes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Scope"
+          },
+          "minItems": 1
+        },
+        "capabilities": {
+          "const": [
+            "memory.read"
+          ]
+        },
+        "checkpoint_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "checkpoint_snapshot": {
+          "$ref": "#/$defs/Snapshot"
+        },
+        "constraints": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ActiveConstraint"
+          }
+        },
+        "source_event_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "expected_artifact": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "CheckpointActive": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "checkpoint_id",
+        "scope",
+        "snapshot",
+        "subjects",
+        "last_result",
+        "pending_conflicts",
+        "recent_event_ids",
+        "source_event_ids",
+        "workspace_snapshot",
+        "created_at"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "0.3"
+        },
+        "checkpoint_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scope": {
+          "$ref": "#/$defs/Scope"
+        },
+        "snapshot": {
+          "$ref": "#/$defs/Snapshot"
+        },
+        "subjects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Subject"
+          }
+        },
+        "last_result": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Event"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "pending_conflicts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/PendingConflict"
+          }
+        },
+        "recent_event_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "source_event_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "workspace_snapshot": {
+          "type": [
+            "object",
+            "string",
+            "null"
+          ],
+          "additionalProperties": true
+        },
+        "created_at": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "CheckpointForgotten": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "checkpoint_id",
+        "scope",
+        "created_at",
+        "deleted"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "0.3"
+        },
+        "checkpoint_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scope": {
+          "$ref": "#/$defs/Scope"
+        },
+        "created_at": {
+          "type": "string",
+          "minLength": 1
+        },
+        "deleted": {
+          "const": true
+        }
+      }
+    },
+    "ReferenceAnchor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "event_id",
+        "actor",
+        "origin_kind",
+        "text",
+        "source_event_ids",
+        "subject_key",
+        "decision_source_event_id",
+        "status",
+        "authority"
+      ],
+      "properties": {
+        "event_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "actor": {
+          "enum": [
+            "user",
+            "assistant",
+            "tool",
+            "system"
+          ]
+        },
+        "origin_kind": {
+          "enum": [
+            "user_input",
+            "assistant_output",
+            "tool_result",
+            "imported_source",
+            "generated_context"
+          ]
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_event_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        },
+        "subject_key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "decision_source_event_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "const": "historical_proposal"
+        },
+        "authority": {
+          "const": "assistant_proposal"
+        }
+      }
+    },
+    "EventMemoryExcerpt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "memory_id",
+        "kind",
+        "content",
+        "source_event_ids",
+        "subject_revisions",
+        "actor",
+        "origin_kind"
+      ],
+      "properties": {
+        "memory_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "const": "event"
+        },
+        "content": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_event_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        },
+        "subject_revisions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SubjectRevision"
+          }
+        },
+        "actor": {
+          "enum": [
+            "user",
+            "assistant",
+            "tool",
+            "system"
+          ]
+        },
+        "origin_kind": {
+          "enum": [
+            "user_input",
+            "assistant_output",
+            "tool_result",
+            "imported_source",
+            "generated_context"
+          ]
+        }
+      }
+    },
+    "DerivedMemoryExcerpt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "memory_id",
+        "kind",
+        "content",
+        "source_event_ids",
+        "subject_revisions",
+        "authority",
+        "status"
+      ],
+      "properties": {
+        "memory_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "enum": [
+            "summary",
+            "candidate",
+            "experience",
+            "index"
+          ]
+        },
+        "content": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_event_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        },
+        "subject_revisions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SubjectRevision"
+          }
+        },
+        "authority": {
+          "const": "inferred"
+        },
+        "status": {
+          "const": "candidate"
+        }
+      }
+    },
+    "EvidenceExcerpt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "event_id",
+        "actor",
+        "origin_kind",
+        "text",
+        "source_event_ids",
+        "status",
+        "effective_subjects"
+      ],
+      "properties": {
+        "event_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "actor": {
+          "enum": [
+            "user",
+            "assistant",
+            "tool",
+            "system"
+          ]
+        },
+        "origin_kind": {
+          "enum": [
+            "user_input",
+            "assistant_output",
+            "tool_result",
+            "imported_source",
+            "generated_context"
+          ]
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_event_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        },
+        "status": {
+          "enum": [
+            "current_source",
+            "historical_source"
+          ]
+        },
+        "effective_subjects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SubjectRevision"
+          }
+        }
+      }
+    }
+  }
+}

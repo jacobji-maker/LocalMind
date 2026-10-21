@@ -1,0 +1,49 @@
+{
+  "_note": "Design defaults only; not a working application configuration. Tune after M0 measurements.",
+  "schema_version": "0.2",
+  "single_writer": true,
+  "foreground_local_inference": {
+    "max_calls_per_turn": 1,
+    "soft_deadline_ms": 1500,
+    "automatic_retries": 0,
+    "failure_mode": "deterministic_retrieval"
+  },
+  "context": {
+    "supplement_estimated_token_cap": 1800,
+    "supplement_utf8_byte_cap": 12288,
+    "mandatory_overflow": "stop_and_report",
+    "max_revision_rebuilds": 2
+  },
+  "scope": {
+    "cross_project": "deny_by_default",
+    "inferred_global_preferences": "candidate_only"
+  },
+  "pause": {
+    "collect": false,
+    "inject": false,
+    "background_consolidation": false
+  },
+  "background": {
+    "max_concurrent_local_inference": 1,
+    "max_queue_items": 100,
+    "foreground_has_priority": true,
+    "new_cloud_calls": false
+  },
+  "adapter": {
+    "complete_compaction_acceptance": "controlled_cli",
+    "native_hooks": "capability_gated",
+    "fresh_remote_thread_per_user_turn": true,
+    "tool_actions": "memory_read_only",
+    "native_hook_timeout_seconds": 3
+  },
+  "privacy": {
+    "raw_content_in_metrics": false,
+    "credential_paths": "excluded",
+    "model_requests_in_design_phase": false
+  },
+  "lifecycle": {
+    "capture_epoch_required": true,
+    "resume_backfill_paused_content": false,
+    "forget_recheck_before_commit": true
+  }
+}

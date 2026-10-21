@@ -1,0 +1,151 @@
+{
+  "report_kind": "template-not-measured",
+  "schema_version": "draft-0.1",
+  "generated_at": null,
+  "environment_label": null,
+  "selected_adapter": null,
+  "runtime": {
+    "python": null,
+    "sdk": null,
+    "bundled_runtime": null,
+    "protocol_version": null
+  },
+  "auth_kind": "unknown",
+  "context_ownership": "unknown",
+  "observability": {
+    "local_packet": "unknown",
+    "sdk_or_rpc_input": "unknown",
+    "host_history": "unknown",
+    "final_model_request": "unknown",
+    "usage": "unknown"
+  },
+  "locality": {
+    "storage": "unknown",
+    "embedding": "unknown",
+    "planner": "unknown",
+    "consolidation": "unknown",
+    "answer_model": "unknown"
+  },
+  "tool_surface": {
+    "shell": {
+      "exposed": "unknown",
+      "execution_boundary": "unknown",
+      "evidence": []
+    },
+    "hosted_search": {
+      "exposed": "unknown",
+      "execution_boundary": "unknown",
+      "evidence": []
+    },
+    "mcp": {
+      "exposed": "unknown",
+      "execution_boundary": "unknown",
+      "evidence": []
+    },
+    "apps_or_plugins": {
+      "exposed": "unknown",
+      "execution_boundary": "unknown",
+      "evidence": []
+    },
+    "dynamic_tools": {
+      "exposed": "unknown",
+      "execution_boundary": "unknown",
+      "evidence": []
+    },
+    "direct_host_rpc": {
+      "exposed": "unknown",
+      "execution_boundary": "unknown",
+      "evidence": []
+    }
+  },
+  "checks": [
+    {
+      "id": "runtime",
+      "status": "unknown",
+      "evidence_level": "not_checked",
+      "acceptance": "版本与包自带runtime；不要仅看PATH",
+      "evidence": []
+    },
+    {
+      "id": "protocol",
+      "status": "unknown",
+      "evidence_level": "not_checked",
+      "acceptance": "实际initialize与锁定协议Schema",
+      "evidence": []
+    },
+    {
+      "id": "authentication",
+      "status": "unknown",
+      "evidence_level": "not_checked",
+      "acceptance": "受支持状态接口只提取认证类别，不读凭证",
+      "evidence": []
+    },
+    {
+      "id": "history_exclusion",
+      "status": "unknown",
+      "evidence_level": "not_checked",
+      "acceptance": "独立新线程与可观察的应用消息，不能仅凭回答推断",
+      "evidence": []
+    },
+    {
+      "id": "implicit_instructions",
+      "status": "unknown",
+      "evidence_level": "not_checked",
+      "acceptance": "工作区指令、宿主记忆、Hooks/MCP instructions的启用范围",
+      "evidence": []
+    },
+    {
+      "id": "request_observability",
+      "status": "unknown",
+      "evidence_level": "not_checked",
+      "acceptance": "packet、SDK/RPC、历史和最终请求分开",
+      "evidence": []
+    },
+    {
+      "id": "tool_surface",
+      "status": "unknown",
+      "evidence_level": "not_checked",
+      "acceptance": "暴露、执行、权限、宿主直接RPC分开",
+      "evidence": []
+    },
+    {
+      "id": "hooks",
+      "status": "unknown",
+      "evidence_level": "not_checked",
+      "acceptance": "事件、同步时机、信任、超时、超限和重复配置",
+      "evidence": []
+    },
+    {
+      "id": "compaction",
+      "status": "unknown",
+      "evidence_level": "not_checked",
+      "acceptance": "ACK与完成事件分开，compact后恢复",
+      "evidence": []
+    },
+    {
+      "id": "local_models",
+      "status": "unknown",
+      "evidence_level": "not_checked",
+      "acceptance": "存储、embedding、规划、后台整理分别核验",
+      "evidence": []
+    },
+    {
+      "id": "recovery",
+      "status": "unknown",
+      "evidence_level": "not_checked",
+      "acceptance": "幂等接收、未知远端状态、暂停/删除代次",
+      "evidence": []
+    },
+    {
+      "id": "quality_and_cost",
+      "status": "unknown",
+      "evidence_level": "not_checked",
+      "acceptance": "使用合成材料；行为、实际输入、全部推理耗时/用量分别记录",
+      "evidence": []
+    }
+  ],
+  "blockers": [],
+  "notes": [
+    "模板不是实测结果；status可用confirmed/unsupported/unknown，必须附证据。"
+  ]
+}

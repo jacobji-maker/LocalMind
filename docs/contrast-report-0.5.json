@@ -1,0 +1,1735 @@
+{
+  "kind": "real-local-model-development-contrast",
+  "model": "qwen3.5:9b",
+  "fixture_sha256": "2636ffeaf6a34fa9b4bf63d53408f90195c325b468364676dd904aec57d62f90",
+  "summary": {
+    "localmind_mcp": {
+      "passed": 11,
+      "total": 11,
+      "failed_cases": [],
+      "input_tokens": 7549,
+      "output_tokens": 114,
+      "median_end_to_end_ms": 1611.49,
+      "explicit_state": {
+        "passed": 8,
+        "total": 8
+      },
+      "capture_only": {
+        "passed": 3,
+        "total": 3
+      }
+    },
+    "full_valid_history": {
+      "passed": 11,
+      "total": 11,
+      "failed_cases": [],
+      "input_tokens": 5118,
+      "output_tokens": 109,
+      "median_end_to_end_ms": 1010.47,
+      "explicit_state": {
+        "passed": 8,
+        "total": 8
+      },
+      "capture_only": {
+        "passed": 3,
+        "total": 3
+      }
+    },
+    "recent_history": {
+      "passed": 9,
+      "total": 11,
+      "failed_cases": [
+        "C04",
+        "C01"
+      ],
+      "input_tokens": 4640,
+      "output_tokens": 106,
+      "median_end_to_end_ms": 1056.8,
+      "explicit_state": {
+        "passed": 6,
+        "total": 8
+      },
+      "capture_only": {
+        "passed": 3,
+        "total": 3
+      }
+    },
+    "no_memory": {
+      "passed": 3,
+      "total": 11,
+      "failed_cases": [
+        "C03",
+        "C08",
+        "C04",
+        "C02",
+        "C10",
+        "C09",
+        "C06",
+        "C01"
+      ],
+      "input_tokens": 4149,
+      "output_tokens": 95,
+      "median_end_to_end_ms": 658.9,
+      "explicit_state": {
+        "passed": 2,
+        "total": 8
+      },
+      "capture_only": {
+        "passed": 1,
+        "total": 3
+      }
+    },
+    "localmind_context": {
+      "passed": 10,
+      "total": 11,
+      "failed_cases": [
+        "C09"
+      ],
+      "input_tokens": 6429,
+      "output_tokens": 95,
+      "median_end_to_end_ms": 1007.37,
+      "explicit_state": {
+        "passed": 8,
+        "total": 8
+      },
+      "capture_only": {
+        "passed": 2,
+        "total": 3
+      }
+    }
+  },
+  "records": [
+    {
+      "case_id": "C04",
+      "arm": "localmind_mcp",
+      "category": "ordinal_choice_reference",
+      "capture_mode": "explicit_state",
+      "utf8_bytes": 3349,
+      "retrieval_latency_ms": 125.685,
+      "answer": "{\n\"backend\": \"文件\"\n}",
+      "expected": {
+        "backend": "文件"
+      },
+      "judgment": {
+        "passed": true,
+        "parsed": {
+          "backend": "文件"
+        },
+        "errors": []
+      },
+      "model_latency_ms": 2447.515,
+      "usage": {
+        "prompt_eval_count": 784,
+        "eval_count": 11,
+        "load_duration": 9729375,
+        "total_duration": 2442975042,
+        "prompt_eval_duration": 1867040000,
+        "eval_duration": 527413000
+      }
+    },
+    {
+      "case_id": "C01",
+      "arm": "full_valid_history",
+      "category": "cross_session_longer_history",
+      "capture_mode": "explicit_state",
+      "utf8_bytes": 4554,
+      "retrieval_latency_ms": 0,
+      "answer": "{\n\"backend\": \"SQLite\",\n\"language\": \"中文\"\n}",
+      "expected": {
+        "backend": "SQLite",
+        "language": "中文"
+      },
+      "judgment": {
+        "passed": true,
+        "parsed": {
+          "backend": "SQLite",
+          "language": "中文"
+        },
+        "errors": []
+      },
+      "model_latency_ms": 2344.851,
+      "usage": {
+        "prompt_eval_count": 878,
+        "eval_count": 18,
+        "load_duration": 4800458,
+        "total_duration": 2342175708,
+        "prompt_eval_duration": 1332369000,
+        "eval_duration": 944092000
+      }
+    },
+    {
+      "case_id": "C07",
+      "arm": "recent_history",
+      "category": "forget_confirmation_source",
+      "capture_mode": "explicit_state",
+      "utf8_bytes": 2140,
+      "retrieval_latency_ms": 0,
+      "answer": "{\n\"backend\": null\n}",
+      "expected": {
+        "backend": null
+      },
+      "judgment": {
+        "passed": true,
+        "parsed": {
+          "backend": null
+        },
+        "errors": []
+      },
+      "model_latency_ms": 1056.803,
+      "usage": {
+        "prompt_eval_count": 393,
+        "eval_count": 9,
+        "load_duration": 4825583,
+        "total_duration": 1054179166,
+        "prompt_eval_duration": 357040000,
+        "eval_duration": 495368000
+      }
+    },
+    {
+      "case_id": "C03",
+      "arm": "no_memory",
+      "category": "natural_correction_without_subject_parser",
+      "capture_mode": "capture_only",
+      "utf8_bytes": 2028,
+      "retrieval_latency_ms": 0,
+      "answer": "{\"ttl_minutes\":null}",
+      "expected": {
+        "ttl_minutes": 90
+      },
+      "judgment": {
+        "passed": false,
+        "parsed": {
+          "ttl_minutes": null
+        },
+        "errors": [
+          "WRONG_TYPE:ttl_minutes"
+        ]
+      },
+      "model_latency_ms": 653.378,
+      "usage": {
+        "prompt_eval_count": 370,
+        "eval_count": 7,
+        "load_duration": 7282209,
+        "total_duration": 651454667,
+        "prompt_eval_duration": 337351000,
+        "eval_duration": 294358000
+      }
+    },
+    {
+      "case_id": "C04",
+      "arm": "full_valid_history",
+      "category": "ordinal_choice_reference",
+      "capture_mode": "explicit_state",
+      "utf8_bytes": 2405,
+      "retrieval_latency_ms": 0,
+      "answer": "{\"backend\":\"文件\"}",
+      "expected": {
+        "backend": "文件"
+      },
+      "judgment": {
+        "passed": true,
+        "parsed": {
+          "backend": "文件"
+        },
+        "errors": []
+      },
+      "model_latency_ms": 778.101,
+      "usage": {
+        "prompt_eval_count": 439,
+        "eval_count": 6,
+        "load_duration": 4904166,
+        "total_duration": 775516708,
+        "prompt_eval_duration": 507969000,
+        "eval_duration": 257452999
+      }
+    },
+    {
+      "case_id": "C03",
+      "arm": "full_valid_history",
+      "category": "natural_correction_without_subject_parser",
+      "capture_mode": "capture_only",
+      "utf8_bytes": 2359,
+      "retrieval_latency_ms": 0,
+      "answer": "{\"ttl_minutes\":90}",
+      "expected": {
+        "ttl_minutes": 90
+      },
+      "judgment": {
+        "passed": true,
+        "parsed": {
+          "ttl_minutes": 90
+        },
+        "errors": []
+      },
+      "model_latency_ms": 1010.465,
+      "usage": {
+        "prompt_eval_count": 431,
+        "eval_count": 8,
+        "load_duration": 5264959,
+        "total_duration": 1001845417,
+        "prompt_eval_duration": 569724000,
+        "eval_duration": 416545000
+      }
+    },
+    {
+      "case_id": "C08",
+      "arm": "no_memory",
+      "category": "project_scope_isolation",
+      "capture_mode": "explicit_state",
+      "utf8_bytes": 2024,
+      "retrieval_latency_ms": 0,
+      "answer": "{\n  \"owner\": null\n}",
+      "expected": {
+        "owner": "林珊"
+      },
+      "judgment": {
+        "passed": false,
+        "parsed": {
+          "owner": null
+        },
+        "errors": [
+          "WRONG_TYPE:owner"
+        ]
+      },
+      "model_latency_ms": 911.326,
+      "usage": {
+        "prompt_eval_count": 369,
+        "eval_count": 10,
+        "load_duration": 85515209,
+        "total_duration": 889365792,
+        "prompt_eval_duration": 322832000,
+        "eval_duration": 446429000
+      }
+    },
+    {
+      "case_id": "C05",
+      "arm": "full_valid_history",
+      "category": "assistant_proposal_is_not_confirmation",
+      "capture_mode": "capture_only",
+      "utf8_bytes": 2348,
+      "retrieval_latency_ms": 0,
+      "answer": "{\n  \"backend\": null\n}",
+      "expected": {
+        "backend": null
+      },
+      "judgment": {
+        "passed": true,
+        "parsed": {
+          "backend": null
+        },
+        "errors": []
+      },
+      "model_latency_ms": 1048.617,
+      "usage": {
+        "prompt_eval_count": 431,
+        "eval_count": 10,
+        "load_duration": 9886000,
+        "total_duration": 1045089167,
+        "prompt_eval_duration": 511806000,
+        "eval_duration": 501097000
+      }
+    },
+    {
+      "case_id": "C10",
+      "arm": "full_valid_history",
+      "category": "numeric_units_and_limits",
+      "capture_mode": "explicit_state",
+      "utf8_bytes": 2363,
+      "retrieval_latency_ms": 0,
+      "answer": "{\"timeout_ms\":2500,\"retries\":2}",
+      "expected": {
+        "timeout_ms": 2500,
+        "retries": 2
+      },
+      "judgment": {
+        "passed": true,
+        "parsed": {
+          "timeout_ms": 2500,
+          "retries": 2
+        },
+        "errors": []
+      },
+      "model_latency_ms": 1342.267,
+      "usage": {
+        "prompt_eval_count": 437,
+        "eval_count": 15,
+        "load_duration": 5000166,
+        "total_duration": 1337501625,
+        "prompt_eval_duration": 537110000,
+        "eval_duration": 787740000
+      }
+    },
+    {
+      "case_id": "C04",
+      "arm": "recent_history",
+      "category": "ordinal_choice_reference",
+      "capture_mode": "explicit_state",
+      "utf8_bytes": 2246,
+      "retrieval_latency_ms": 0,
+      "answer": "{\"backend\":null}",
+      "expected": {
+        "backend": "文件"
+      },
+      "judgment": {
+        "passed": false,
+        "parsed": {
+          "backend": null
+        },
+        "errors": [
+          "WRONG_TYPE:backend"
+        ]
+      },
+      "model_latency_ms": 765.36,
+      "usage": {
+        "prompt_eval_count": 408,
+        "eval_count": 6,
+        "load_duration": 6066584,
+        "total_duration": 763470250,
+        "prompt_eval_duration": 501432000,
+        "eval_duration": 243822000
+      }
+    },
+    {
+      "case_id": "C09",
+      "arm": "localmind_context",
+      "category": "semantic_alias_without_literal_overlap",
+      "capture_mode": "capture_only",
+      "utf8_bytes": 2261,
+      "retrieval_latency_ms": 1.721,
+      "answer": "{\"channel\":null}",
+      "expected": {
+        "channel": "电子邮件"
+      },
+      "judgment": {
+        "passed": false,
+        "parsed": {
+          "channel": null
+        },
+        "errors": [
+          "WRONG_TYPE:channel"
+        ]
+      },
+      "model_latency_ms": 778.107,
+      "usage": {
+        "prompt_eval_count": 412,
+        "eval_count": 6,
+        "load_duration": 5568625,
+        "total_duration": 775874000,
+        "prompt_eval_duration": 483450000,
+        "eval_duration": 278570000
+      }
+    },
+    {
+      "case_id": "C10",
+      "arm": "recent_history",
+      "category": "numeric_units_and_limits",
+      "capture_mode": "explicit_state",
+      "utf8_bytes": 2363,
+      "retrieval_latency_ms": 0,
+      "answer": "{\"timeout_ms\":2500,\"retries\":2}",
+      "expected": {
+        "timeout_ms": 2500,
+        "retries": 2
+      },
+      "judgment": {
+        "passed": true,
+        "parsed": {
+          "timeout_ms": 2500,
+          "retries": 2
+        },
+        "errors": []
+      },
+      "model_latency_ms": 1260.347,
+      "usage": {
+        "prompt_eval_count": 437,
+        "eval_count": 15,
+        "load_duration": 5100000,
+        "total_duration": 1257855292,
+        "prompt_eval_duration": 519123000,
+        "eval_duration": 726660000
+      }
+    },
+    {
+      "case_id": "C03",
+      "arm": "localmind_mcp",
+      "category": "natural_correction_without_subject_parser",
+      "capture_mode": "capture_only",
+      "utf8_bytes": 2886,
+      "retrieval_latency_ms": 125.284,
+      "answer": "{\"ttl_minutes\":90}",
+      "expected": {
+        "ttl_minutes": 90
+      },
+      "judgment": {
+        "passed": true,
+        "parsed": {
+          "ttl_minutes": 90
+        },
+        "errors": []
+      },
+      "model_latency_ms": 1627.683,
+      "usage": {
+        "prompt_eval_count": 671,
+        "eval_count": 8,
+        "load_duration": 4185792,
+        "total_duration": 1624797834,
+        "prompt_eval_duration": 1206106000,
+        "eval_duration": 397160000
+      }
+    },
+    {
+      "case_id": "C03",
+      "arm": "recent_history",
+      "category": "natural_correction_without_subject_parser",
+      "capture_mode": "capture_only",
+      "utf8_bytes": 2258,
+      "retrieval_latency_ms": 0,
+      "answer": "{\"ttl_minutes\":90}",
+      "expected": {
+        "ttl_minutes": 90
+      },
+      "judgment": {
+        "passed": true,
+        "parsed": {
+          "ttl_minutes": 90
+        },
+        "errors": []
+      },
+      "model_latency_ms": 964.116,
+      "usage": {
+        "prompt_eval_count": 412,
+        "eval_count": 8,
+        "load_duration": 4503916,
+        "total_duration": 957463833,
+        "prompt_eval_duration": 489312000,
+        "eval_duration": 337538000
+      }
+    },
+    {
+      "case_id": "C04",
+      "arm": "no_memory",
+      "category": "ordinal_choice_reference",
+      "capture_mode": "explicit_state",
+      "utf8_bytes": 2024,
+      "retrieval_latency_ms": 0,
+      "answer": "{\"backend\":null}",
+      "expected": {
+        "backend": "文件"
+      },
+      "judgment": {
+        "passed": false,
+        "parsed": {
+          "backend": null
+        },
+        "errors": [
+          "WRONG_TYPE:backend"
+        ]
+      },
+      "model_latency_ms": 597.728,
+      "usage": {
+        "prompt_eval_count": 368,
+        "eval_count": 6,
+        "load_duration": 5748417,
+        "total_duration": 595641250,
+        "prompt_eval_duration": 317879000,
+        "eval_duration": 251677000
+      }
+    },
+    {
+      "case_id": "C11",
+      "arm": "localmind_context",
+      "category": "irrelevant_memory_should_not_fill_missing_fact",
+      "capture_mode": "explicit_state",
+      "utf8_bytes": 2697,
+      "retrieval_latency_ms": 2.165,
+      "answer": "{\"payment_provider\":null}",
+      "expected": {
+        "payment_provider": null
+      },
+      "judgment": {
+        "passed": true,
+        "parsed": {
+          "payment_provider": null
+        },
+        "errors": []
+      },
+      "model_latency_ms": 1111.612,
+      "usage": {
+        "prompt_eval_count": 551,
+        "eval_count": 7,
+        "load_duration": 5954208,
+        "total_duration": 1107403166,
+        "prompt_eval_duration": 788830000,
+        "eval_duration": 299923000
+      }
+    },
+    {
+      "case_id": "C07",
+      "arm": "localmind_mcp",
+      "category": "forget_confirmation_source",
+      "capture_mode": "explicit_state",
+      "utf8_bytes": 2414,
+      "retrieval_latency_ms": 126.286,
+      "answer": "{\"backend\":null}",
+      "expected": {
+        "backend": null
+      },
+      "judgment": {
+        "passed": true,
+        "parsed": {
+          "backend": null
+        },
+        "errors": []
+      },
+      "model_latency_ms": 848.828,
+      "usage": {
+        "prompt_eval_count": 467,
+        "eval_count": 6,
+        "load_duration": 6753959,
+        "total_duration": 846415209,
+        "prompt_eval_duration": 552461000,
+        "eval_duration": 270849000
+      }
+    },
+    {
+      "case_id": "C04",
+      "arm": "localmind_context",
+      "category": "ordinal_choice_reference",
+      "capture_mode": "explicit_state",
+      "utf8_bytes": 3102,
+      "retrieval_latency_ms": 2.547,
+      "answer": "{\n\"backend\": \"文件\"\n}",
+      "expected": {
+        "backend": "文件"
+      },
+      "judgment": {
+        "passed": true,
+        "parsed": {
+          "backend": "文件"
+        },
+        "errors": []
+      },
+      "model_latency_ms": 1640.112,
+      "usage": {
+        "prompt_eval_count": 683,
+        "eval_count": 11,
+        "load_duration": 5679583,
+        "total_duration": 1636993625,
+        "prompt_eval_duration": 1104311000,
+        "eval_duration": 520595000
+      }
+    },
+    {
+      "case_id": "C06",
+      "arm": "localmind_mcp",
+      "category": "conditional_permission_and_negation",
+      "capture_mode": "explicit_state",
+      "utf8_bytes": 3111,
+      "retrieval_latency_ms": 127.585,
+      "answer": "{\"can_modify\":false}",
+      "expected": {
+        "can_modify": false
+      },
+      "judgment": {
+        "passed": true,
+        "parsed": {
+          "can_modify": false
+        },
+        "errors": []
+      },
+      "model_latency_ms": 1543.305,
+      "usage": {
+        "prompt_eval_count": 682,
+        "eval_count": 7,
+        "load_duration": 4627750,
+        "total_duration": 1540152500,
+        "prompt_eval_duration": 1120284000,
+        "eval_duration": 298364000
+      }
+    },
+    {
+      "case_id": "C08",
+      "arm": "localmind_context",
+      "category": "project_scope_isolation",
+      "capture_mode": "explicit_state",
+      "utf8_bytes": 2381,
+      "retrieval_latency_ms": 1.323,
+      "answer": "{\"owner\":\"林珊\"}",
+      "expected": {
+        "owner": "林珊"
+      },
+      "judgment": {
+        "passed": true,
+        "parsed": {
+          "owner": "林珊"
+        },
+        "errors": []
+      },
+      "model_latency_ms": 1006.047,
+      "usage": {
+        "prompt_eval_count": 465,
+        "eval_count": 7,
+        "load_duration": 5939167,
+        "total_duration": 996914792,
+        "prompt_eval_duration": 580292000,
+        "eval_duration": 332419000
+      }
+    },
+    {
+      "case_id": "C10",
+      "arm": "localmind_mcp",
+      "category": "numeric_units_and_limits",
+      "capture_mode": "explicit_state",
+      "utf8_bytes": 3028,
+      "retrieval_latency_ms": 118.896,
+      "answer": "{\"timeout_ms\":2500,\"retries\":2}",
+      "expected": {
+        "timeout_ms": 2500,
+        "retries": 2
+      },
+      "judgment": {
+        "passed": true,
+        "parsed": {
+          "timeout_ms": 2500,
+          "retries": 2
+        },
+        "errors": []
+      },
+      "model_latency_ms": 2064.139,
+      "usage": {
+        "prompt_eval_count": 682,
+        "eval_count": 15,
+        "load_duration": 3440083,
+        "total_duration": 2058999250,
+        "prompt_eval_duration": 1201611000,
+        "eval_duration": 835217000
+      }
+    },
+    {
+      "case_id": "C08",
+      "arm": "recent_history",
+      "category": "project_scope_isolation",
+      "capture_mode": "explicit_state",
+      "utf8_bytes": 2249,
+      "retrieval_latency_ms": 0,
+      "answer": "{\"owner\":\"林珊\"}",
+      "expected": {
+        "owner": "林珊"
+      },
+      "judgment": {
+        "passed": true,
+        "parsed": {
+          "owner": "林珊"
+        },
+        "errors": []
+      },
+      "model_latency_ms": 1369.246,
+      "usage": {
+        "prompt_eval_count": 409,
+        "eval_count": 7,
+        "load_duration": 6344750,
+        "total_duration": 1365632583,
+        "prompt_eval_duration": 524587000,
+        "eval_duration": 365682000
+      }
+    },
+    {
+      "case_id": "C05",
+      "arm": "localmind_mcp",
+      "category": "assistant_proposal_is_not_confirmation",
+      "capture_mode": "capture_only",
+      "utf8_bytes": 2844,
+      "retrieval_latency_ms": 118.713,
+      "answer": "{\n  \"backend\": null\n}",
+      "expected": {
+        "backend": null
+      },
+      "judgment": {
+        "passed": true,
+        "parsed": {
+          "backend": null
+        },
+        "errors": []
+      },
+      "model_latency_ms": 1311.259,
+      "usage": {
+        "prompt_eval_count": 631,
+        "eval_count": 10,
+        "load_duration": 7949167,
+        "total_duration": 1308396167,
+        "prompt_eval_duration": 827931000,
+        "eval_duration": 434334000
+      }
+    },
+    {
+      "case_id": "C01",
+      "arm": "localmind_context",
+      "category": "cross_session_longer_history",
+      "capture_mode": "explicit_state",
+      "utf8_bytes": 4943,
+      "retrieval_latency_ms": 6.028,
+      "answer": "{\"backend\":\"SQLite\",\"language\":\"中文\"}",
+      "expected": {
+        "backend": "SQLite",
+        "language": "中文"
+      },
+      "judgment": {
+        "passed": true,
+        "parsed": {
+          "backend": "SQLite",
+          "language": "中文"
+        },
+        "errors": []
+      },
+      "model_latency_ms": 2708.192,
+      "usage": {
+        "prompt_eval_count": 1286,
+        "eval_count": 10,
+        "load_duration": 5290917,
+        "total_duration": 2705148375,
+        "prompt_eval_duration": 2133357000,
+        "eval_duration": 494743000
+      }
+    },
+    {
+      "case_id": "C07",
+      "arm": "full_valid_history",
+      "category": "forget_confirmation_source",
+      "capture_mode": "explicit_state",
+      "utf8_bytes": 2140,
+      "retrieval_latency_ms": 0,
+      "answer": "{\n\"backend\": null\n}",
+      "expected": {
+        "backend": null
+      },
+      "judgment": {
+        "passed": true,
+        "parsed": {
+          "backend": null
+        },
+        "errors": []
+      },
+      "model_latency_ms": 934.132,
+      "usage": {
+        "prompt_eval_count": 393,
+        "eval_count": 9,
+        "load_duration": 14820584,
+        "total_duration": 930394042,
+        "prompt_eval_duration": 358553000,
+        "eval_duration": 410574000
+      }
+    },
+    {
+      "case_id": "C09",
+      "arm": "full_valid_history",
+      "category": "semantic_alias_without_literal_overlap",
+      "capture_mode": "capture_only",
+      "utf8_bytes": 2273,
+      "retrieval_latency_ms": 0,
+      "answer": "{\"channel\":\"email\"}",
+      "expected": {
+        "channel": "电子邮件"
+      },
+      "judgment": {
+        "passed": true,
+        "parsed": {
+          "channel": "email"
+        },
+        "errors": []
+      },
+      "model_latency_ms": 799.107,
+      "usage": {
+        "prompt_eval_count": 412,
+        "eval_count": 6,
+        "load_duration": 4555125,
+        "total_duration": 796874291,
+        "prompt_eval_duration": 510787000,
+        "eval_duration": 255851000
+      }
+    },
+    {
+      "case_id": "C02",
+      "arm": "localmind_mcp",
+      "category": "explicit_correction",
+      "capture_mode": "explicit_state",
+      "utf8_bytes": 2855,
+      "retrieval_latency_ms": 126.021,
+      "answer": "{\"ttl_minutes\":90}",
+      "expected": {
+        "ttl_minutes": 90
+      },
+      "judgment": {
+        "passed": true,
+        "parsed": {
+          "ttl_minutes": 90
+        },
+        "errors": []
+      },
+      "model_latency_ms": 1205.051,
+      "usage": {
+        "prompt_eval_count": 640,
+        "eval_count": 8,
+        "load_duration": 3156959,
+        "total_duration": 1199111792,
+        "prompt_eval_duration": 797477000,
+        "eval_duration": 389754000
+      }
+    },
+    {
+      "case_id": "C05",
+      "arm": "recent_history",
+      "category": "assistant_proposal_is_not_confirmation",
+      "capture_mode": "capture_only",
+      "utf8_bytes": 2348,
+      "retrieval_latency_ms": 0,
+      "answer": "{\n  \"backend\": null\n}",
+      "expected": {
+        "backend": null
+      },
+      "judgment": {
+        "passed": true,
+        "parsed": {
+          "backend": null
+        },
+        "errors": []
+      },
+      "model_latency_ms": 1112.034,
+      "usage": {
+        "prompt_eval_count": 431,
+        "eval_count": 10,
+        "load_duration": 3539875,
+        "total_duration": 1109461208,
+        "prompt_eval_duration": 537225000,
+        "eval_duration": 480858000
+      }
+    },
+    {
+      "case_id": "C06",
+      "arm": "full_valid_history",
+      "category": "conditional_permission_and_negation",
+      "capture_mode": "explicit_state",
+      "utf8_bytes": 2414,
+      "retrieval_latency_ms": 0,
+      "answer": "{\n  \"can_modify\": false\n}",
+      "expected": {
+        "can_modify": false
+      },
+      "judgment": {
+        "passed": true,
+        "parsed": {
+          "can_modify": false
+        },
+        "errors": []
+      },
+      "model_latency_ms": 1141.504,
+      "usage": {
+        "prompt_eval_count": 442,
+        "eval_count": 11,
+        "load_duration": 4525750,
+        "total_duration": 1136761125,
+        "prompt_eval_duration": 557129000,
+        "eval_duration": 548126000
+      }
+    },
+    {
+      "case_id": "C11",
+      "arm": "no_memory",
+      "category": "irrelevant_memory_should_not_fill_missing_fact",
+      "capture_mode": "explicit_state",
+      "utf8_bytes": 2071,
+      "retrieval_latency_ms": 0,
+      "answer": "{\n\"payment_provider\": null\n}",
+      "expected": {
+        "payment_provider": null
+      },
+      "judgment": {
+        "passed": true,
+        "parsed": {
+          "payment_provider": null
+        },
+        "errors": []
+      },
+      "model_latency_ms": 793.343,
+      "usage": {
+        "prompt_eval_count": 376,
+        "eval_count": 10,
+        "load_duration": 6805875,
+        "total_duration": 791678625,
+        "prompt_eval_duration": 320155000,
+        "eval_duration": 454201000
+      }
+    },
+    {
+      "case_id": "C02",
+      "arm": "localmind_context",
+      "category": "explicit_correction",
+      "capture_mode": "explicit_state",
+      "utf8_bytes": 2491,
+      "retrieval_latency_ms": 2.012,
+      "answer": "{\"ttl_minutes\":90}",
+      "expected": {
+        "ttl_minutes": 90
+      },
+      "judgment": {
+        "passed": true,
+        "parsed": {
+          "ttl_minutes": 90
+        },
+        "errors": []
+      },
+      "model_latency_ms": 911.639,
+      "usage": {
+        "prompt_eval_count": 490,
+        "eval_count": 8,
+        "load_duration": 5620792,
+        "total_duration": 908900417,
+        "prompt_eval_duration": 550950000,
+        "eval_duration": 346605000
+      }
+    },
+    {
+      "case_id": "C02",
+      "arm": "recent_history",
+      "category": "explicit_correction",
+      "capture_mode": "explicit_state",
+      "utf8_bytes": 2276,
+      "retrieval_latency_ms": 0,
+      "answer": "{\"ttl_minutes\":90}",
+      "expected": {
+        "ttl_minutes": 90
+      },
+      "judgment": {
+        "passed": true,
+        "parsed": {
+          "ttl_minutes": 90
+        },
+        "errors": []
+      },
+      "model_latency_ms": 855.327,
+      "usage": {
+        "prompt_eval_count": 417,
+        "eval_count": 8,
+        "load_duration": 5792250,
+        "total_duration": 853661500,
+        "prompt_eval_duration": 492878000,
+        "eval_duration": 349532000
+      }
+    },
+    {
+      "case_id": "C02",
+      "arm": "no_memory",
+      "category": "explicit_correction",
+      "capture_mode": "explicit_state",
+      "utf8_bytes": 2031,
+      "retrieval_latency_ms": 0,
+      "answer": "{\"ttl_minutes\":null}",
+      "expected": {
+        "ttl_minutes": 90
+      },
+      "judgment": {
+        "passed": false,
+        "parsed": {
+          "ttl_minutes": null
+        },
+        "errors": [
+          "WRONG_TYPE:ttl_minutes"
+        ]
+      },
+      "model_latency_ms": 658.901,
+      "usage": {
+        "prompt_eval_count": 370,
+        "eval_count": 7,
+        "load_duration": 6065584,
+        "total_duration": 657395834,
+        "prompt_eval_duration": 330543000,
+        "eval_duration": 304697000
+      }
+    },
+    {
+      "case_id": "C06",
+      "arm": "recent_history",
+      "category": "conditional_permission_and_negation",
+      "capture_mode": "explicit_state",
+      "utf8_bytes": 2414,
+      "retrieval_latency_ms": 0,
+      "answer": "{\n  \"can_modify\": false\n}",
+      "expected": {
+        "can_modify": false
+      },
+      "judgment": {
+        "passed": true,
+        "parsed": {
+          "can_modify": false
+        },
+        "errors": []
+      },
+      "model_latency_ms": 1516.641,
+      "usage": {
+        "prompt_eval_count": 442,
+        "eval_count": 11,
+        "load_duration": 4769917,
+        "total_duration": 1513138708,
+        "prompt_eval_duration": 813566000,
+        "eval_duration": 687989000
+      }
+    },
+    {
+      "case_id": "C06",
+      "arm": "localmind_context",
+      "category": "conditional_permission_and_negation",
+      "capture_mode": "explicit_state",
+      "utf8_bytes": 2641,
+      "retrieval_latency_ms": 1.763,
+      "answer": "{\"can_modify\":false}",
+      "expected": {
+        "can_modify": false
+      },
+      "judgment": {
+        "passed": true,
+        "parsed": {
+          "can_modify": false
+        },
+        "errors": []
+      },
+      "model_latency_ms": 1044.421,
+      "usage": {
+        "prompt_eval_count": 511,
+        "eval_count": 7,
+        "load_duration": 5377375,
+        "total_duration": 1039116958,
+        "prompt_eval_duration": 632789000,
+        "eval_duration": 385910000
+      }
+    },
+    {
+      "case_id": "C02",
+      "arm": "full_valid_history",
+      "category": "explicit_correction",
+      "capture_mode": "explicit_state",
+      "utf8_bytes": 2383,
+      "retrieval_latency_ms": 0,
+      "answer": "{\"ttl_minutes\":90}",
+      "expected": {
+        "ttl_minutes": 90
+      },
+      "judgment": {
+        "passed": true,
+        "parsed": {
+          "ttl_minutes": 90
+        },
+        "errors": []
+      },
+      "model_latency_ms": 970.673,
+      "usage": {
+        "prompt_eval_count": 436,
+        "eval_count": 8,
+        "load_duration": 8651042,
+        "total_duration": 967975209,
+        "prompt_eval_duration": 569395000,
+        "eval_duration": 364822000
+      }
+    },
+    {
+      "case_id": "C08",
+      "arm": "localmind_mcp",
+      "category": "project_scope_isolation",
+      "capture_mode": "explicit_state",
+      "utf8_bytes": 2821,
+      "retrieval_latency_ms": 116.256,
+      "answer": "{\n  \"owner\": \"林珊\"\n}",
+      "expected": {
+        "owner": "林珊"
+      },
+      "judgment": {
+        "passed": true,
+        "parsed": {
+          "owner": "林珊"
+        },
+        "errors": []
+      },
+      "model_latency_ms": 1495.235,
+      "usage": {
+        "prompt_eval_count": 630,
+        "eval_count": 13,
+        "load_duration": 4977083,
+        "total_duration": 1492419667,
+        "prompt_eval_duration": 870794000,
+        "eval_duration": 609729000
+      }
+    },
+    {
+      "case_id": "C11",
+      "arm": "full_valid_history",
+      "category": "irrelevant_memory_should_not_fill_missing_fact",
+      "capture_mode": "explicit_state",
+      "utf8_bytes": 2261,
+      "retrieval_latency_ms": 0,
+      "answer": "{\n  \"payment_provider\": null\n}",
+      "expected": {
+        "payment_provider": null
+      },
+      "judgment": {
+        "passed": true,
+        "parsed": {
+          "payment_provider": null
+        },
+        "errors": []
+      },
+      "model_latency_ms": 1174.657,
+      "usage": {
+        "prompt_eval_count": 410,
+        "eval_count": 11,
+        "load_duration": 9228667,
+        "total_duration": 1170819000,
+        "prompt_eval_duration": 514390000,
+        "eval_duration": 521825000
+      }
+    },
+    {
+      "case_id": "C01",
+      "arm": "localmind_mcp",
+      "category": "cross_session_longer_history",
+      "capture_mode": "explicit_state",
+      "utf8_bytes": 4341,
+      "retrieval_latency_ms": 138.04,
+      "answer": "{\n\"backend\": \"SQLite\",\n\"language\": \"中文\"\n}",
+      "expected": {
+        "backend": "SQLite",
+        "language": "中文"
+      },
+      "judgment": {
+        "passed": true,
+        "parsed": {
+          "backend": "SQLite",
+          "language": "中文"
+        },
+        "errors": []
+      },
+      "model_latency_ms": 2812.713,
+      "usage": {
+        "prompt_eval_count": 1104,
+        "eval_count": 18,
+        "load_duration": 4418292,
+        "total_duration": 2808629584,
+        "prompt_eval_duration": 1909654000,
+        "eval_duration": 865481000
+      }
+    },
+    {
+      "case_id": "C01",
+      "arm": "recent_history",
+      "category": "cross_session_longer_history",
+      "capture_mode": "explicit_state",
+      "utf8_bytes": 2514,
+      "retrieval_latency_ms": 0,
+      "answer": "{\n\"backend\": null,\n\"language\": null\n}",
+      "expected": {
+        "backend": "SQLite",
+        "language": "中文"
+      },
+      "judgment": {
+        "passed": false,
+        "parsed": {
+          "backend": null,
+          "language": null
+        },
+        "errors": [
+          "WRONG_TYPE:backend",
+          "WRONG_TYPE:language"
+        ]
+      },
+      "model_latency_ms": 1571.057,
+      "usage": {
+        "prompt_eval_count": 469,
+        "eval_count": 15,
+        "load_duration": 5411083,
+        "total_duration": 1564826791,
+        "prompt_eval_duration": 543169000,
+        "eval_duration": 889972000
+      }
+    },
+    {
+      "case_id": "C10",
+      "arm": "no_memory",
+      "category": "numeric_units_and_limits",
+      "capture_mode": "explicit_state",
+      "utf8_bytes": 2110,
+      "retrieval_latency_ms": 0,
+      "answer": "{\"timeout_ms\":null,\"retries\":null}",
+      "expected": {
+        "timeout_ms": 2500,
+        "retries": 2
+      },
+      "judgment": {
+        "passed": false,
+        "parsed": {
+          "timeout_ms": null,
+          "retries": null
+        },
+        "errors": [
+          "WRONG_TYPE:timeout_ms",
+          "WRONG_TYPE:retries"
+        ]
+      },
+      "model_latency_ms": 960.705,
+      "usage": {
+        "prompt_eval_count": 389,
+        "eval_count": 12,
+        "load_duration": 8582625,
+        "total_duration": 956675041,
+        "prompt_eval_duration": 354894000,
+        "eval_duration": 561022000
+      }
+    },
+    {
+      "case_id": "C11",
+      "arm": "recent_history",
+      "category": "irrelevant_memory_should_not_fill_missing_fact",
+      "capture_mode": "explicit_state",
+      "utf8_bytes": 2261,
+      "retrieval_latency_ms": 0,
+      "answer": "{\n  \"payment_provider\": null\n}",
+      "expected": {
+        "payment_provider": null
+      },
+      "judgment": {
+        "passed": true,
+        "parsed": {
+          "payment_provider": null
+        },
+        "errors": []
+      },
+      "model_latency_ms": 1037.37,
+      "usage": {
+        "prompt_eval_count": 410,
+        "eval_count": 11,
+        "load_duration": 7783000,
+        "total_duration": 1034818958,
+        "prompt_eval_duration": 511620000,
+        "eval_duration": 504412000
+      }
+    },
+    {
+      "case_id": "C09",
+      "arm": "localmind_mcp",
+      "category": "semantic_alias_without_literal_overlap",
+      "capture_mode": "capture_only",
+      "utf8_bytes": 2769,
+      "retrieval_latency_ms": 117.146,
+      "answer": "{\n\"channel\": \"电子邮件\"\n}",
+      "expected": {
+        "channel": "电子邮件"
+      },
+      "judgment": {
+        "passed": true,
+        "parsed": {
+          "channel": "电子邮件"
+        },
+        "errors": []
+      },
+      "model_latency_ms": 1351.017,
+      "usage": {
+        "prompt_eval_count": 611,
+        "eval_count": 11,
+        "load_duration": 5706875,
+        "total_duration": 1348668583,
+        "prompt_eval_duration": 818358000,
+        "eval_duration": 511722000
+      }
+    },
+    {
+      "case_id": "C10",
+      "arm": "localmind_context",
+      "category": "numeric_units_and_limits",
+      "capture_mode": "explicit_state",
+      "utf8_bytes": 2664,
+      "retrieval_latency_ms": 1.852,
+      "answer": "{\"timeout_ms\":2500,\"retries\":2}",
+      "expected": {
+        "timeout_ms": 2500,
+        "retries": 2
+      },
+      "judgment": {
+        "passed": true,
+        "parsed": {
+          "timeout_ms": 2500,
+          "retries": 2
+        },
+        "errors": []
+      },
+      "model_latency_ms": 1353.796,
+      "usage": {
+        "prompt_eval_count": 532,
+        "eval_count": 15,
+        "load_duration": 7152083,
+        "total_duration": 1348789916,
+        "prompt_eval_duration": 602521000,
+        "eval_duration": 718517000
+      }
+    },
+    {
+      "case_id": "C07",
+      "arm": "no_memory",
+      "category": "forget_confirmation_source",
+      "capture_mode": "explicit_state",
+      "utf8_bytes": 2066,
+      "retrieval_latency_ms": 0,
+      "answer": "{\"backend\":null}",
+      "expected": {
+        "backend": null
+      },
+      "judgment": {
+        "passed": true,
+        "parsed": {
+          "backend": null
+        },
+        "errors": []
+      },
+      "model_latency_ms": 616.07,
+      "usage": {
+        "prompt_eval_count": 378,
+        "eval_count": 6,
+        "load_duration": 9670375,
+        "total_duration": 614522167,
+        "prompt_eval_duration": 339867000,
+        "eval_duration": 256206000
+      }
+    },
+    {
+      "case_id": "C03",
+      "arm": "localmind_context",
+      "category": "natural_correction_without_subject_parser",
+      "capture_mode": "capture_only",
+      "utf8_bytes": 2522,
+      "retrieval_latency_ms": 1.485,
+      "answer": "{\"ttl_minutes\":90}",
+      "expected": {
+        "ttl_minutes": 90
+      },
+      "judgment": {
+        "passed": true,
+        "parsed": {
+          "ttl_minutes": 90
+        },
+        "errors": []
+      },
+      "model_latency_ms": 958.821,
+      "usage": {
+        "prompt_eval_count": 518,
+        "eval_count": 8,
+        "load_duration": 4229792,
+        "total_duration": 955046375,
+        "prompt_eval_duration": 582391000,
+        "eval_duration": 358760000
+      }
+    },
+    {
+      "case_id": "C09",
+      "arm": "recent_history",
+      "category": "semantic_alias_without_literal_overlap",
+      "capture_mode": "capture_only",
+      "utf8_bytes": 2273,
+      "retrieval_latency_ms": 0,
+      "answer": "{\"channel\":\"email\"}",
+      "expected": {
+        "channel": "电子邮件"
+      },
+      "judgment": {
+        "passed": true,
+        "parsed": {
+          "channel": "email"
+        },
+        "errors": []
+      },
+      "model_latency_ms": 781.269,
+      "usage": {
+        "prompt_eval_count": 412,
+        "eval_count": 6,
+        "load_duration": 11676541,
+        "total_duration": 777154375,
+        "prompt_eval_duration": 507979000,
+        "eval_duration": 244291000
+      }
+    },
+    {
+      "case_id": "C09",
+      "arm": "no_memory",
+      "category": "semantic_alias_without_literal_overlap",
+      "capture_mode": "capture_only",
+      "utf8_bytes": 2036,
+      "retrieval_latency_ms": 0,
+      "answer": "{\"channel\":null}",
+      "expected": {
+        "channel": "电子邮件"
+      },
+      "judgment": {
+        "passed": false,
+        "parsed": {
+          "channel": null
+        },
+        "errors": [
+          "WRONG_TYPE:channel"
+        ]
+      },
+      "model_latency_ms": 575.808,
+      "usage": {
+        "prompt_eval_count": 371,
+        "eval_count": 6,
+        "load_duration": 6412792,
+        "total_duration": 573985917,
+        "prompt_eval_duration": 309284000,
+        "eval_duration": 253678000
+      }
+    },
+    {
+      "case_id": "C05",
+      "arm": "no_memory",
+      "category": "assistant_proposal_is_not_confirmation",
+      "capture_mode": "capture_only",
+      "utf8_bytes": 2057,
+      "retrieval_latency_ms": 0,
+      "answer": "{\"backend\":null}",
+      "expected": {
+        "backend": null
+      },
+      "judgment": {
+        "passed": true,
+        "parsed": {
+          "backend": null
+        },
+        "errors": []
+      },
+      "model_latency_ms": 601.564,
+      "usage": {
+        "prompt_eval_count": 378,
+        "eval_count": 6,
+        "load_duration": 6811375,
+        "total_duration": 598807666,
+        "prompt_eval_duration": 315131000,
+        "eval_duration": 271260000
+      }
+    },
+    {
+      "case_id": "C06",
+      "arm": "no_memory",
+      "category": "conditional_permission_and_negation",
+      "capture_mode": "explicit_state",
+      "utf8_bytes": 2108,
+      "retrieval_latency_ms": 0,
+      "answer": "{\n\"can_modify\": null\n}",
+      "expected": {
+        "can_modify": false
+      },
+      "judgment": {
+        "passed": false,
+        "parsed": {
+          "can_modify": null
+        },
+        "errors": [
+          "WRONG_TYPE:can_modify"
+        ]
+      },
+      "model_latency_ms": 798.367,
+      "usage": {
+        "prompt_eval_count": 389,
+        "eval_count": 10,
+        "load_duration": 5239250,
+        "total_duration": 796694875,
+        "prompt_eval_duration": 333834000,
+        "eval_duration": 451768000
+      }
+    },
+    {
+      "case_id": "C11",
+      "arm": "localmind_mcp",
+      "category": "irrelevant_memory_should_not_fill_missing_fact",
+      "capture_mode": "explicit_state",
+      "utf8_bytes": 2926,
+      "retrieval_latency_ms": 115.599,
+      "answer": "{\"payment_provider\":null}",
+      "expected": {
+        "payment_provider": null
+      },
+      "judgment": {
+        "passed": true,
+        "parsed": {
+          "payment_provider": null
+        },
+        "errors": []
+      },
+      "model_latency_ms": 1164.746,
+      "usage": {
+        "prompt_eval_count": 647,
+        "eval_count": 7,
+        "load_duration": 6703667,
+        "total_duration": 1161071417,
+        "prompt_eval_duration": 845908000,
+        "eval_duration": 301536000
+      }
+    },
+    {
+      "case_id": "C01",
+      "arm": "no_memory",
+      "category": "cross_session_longer_history",
+      "capture_mode": "explicit_state",
+      "utf8_bytes": 2138,
+      "retrieval_latency_ms": 0,
+      "answer": "{\n\"backend\": null,\n\"language\": null\n}",
+      "expected": {
+        "backend": "SQLite",
+        "language": "中文"
+      },
+      "judgment": {
+        "passed": false,
+        "parsed": {
+          "backend": null,
+          "language": null
+        },
+        "errors": [
+          "WRONG_TYPE:backend",
+          "WRONG_TYPE:language"
+        ]
+      },
+      "model_latency_ms": 1182.384,
+      "usage": {
+        "prompt_eval_count": 391,
+        "eval_count": 15,
+        "load_duration": 4718792,
+        "total_duration": 1176278500,
+        "prompt_eval_duration": 333003000,
+        "eval_duration": 703500000
+      }
+    },
+    {
+      "case_id": "C08",
+      "arm": "full_valid_history",
+      "category": "project_scope_isolation",
+      "capture_mode": "explicit_state",
+      "utf8_bytes": 2249,
+      "retrieval_latency_ms": 0,
+      "answer": "{\"owner\":\"林珊\"}",
+      "expected": {
+        "owner": "林珊"
+      },
+      "judgment": {
+        "passed": true,
+        "parsed": {
+          "owner": "林珊"
+        },
+        "errors": []
+      },
+      "model_latency_ms": 835.82,
+      "usage": {
+        "prompt_eval_count": 409,
+        "eval_count": 7,
+        "load_duration": 4659292,
+        "total_duration": 832612792,
+        "prompt_eval_duration": 514231000,
+        "eval_duration": 296281000
+      }
+    },
+    {
+      "case_id": "C05",
+      "arm": "localmind_context",
+      "category": "assistant_proposal_is_not_confirmation",
+      "capture_mode": "capture_only",
+      "utf8_bytes": 2597,
+      "retrieval_latency_ms": 1.639,
+      "answer": "{\"backend\":null}",
+      "expected": {
+        "backend": null
+      },
+      "judgment": {
+        "passed": true,
+        "parsed": {
+          "backend": null
+        },
+        "errors": []
+      },
+      "model_latency_ms": 889.657,
+      "usage": {
+        "prompt_eval_count": 531,
+        "eval_count": 6,
+        "load_duration": 4979416,
+        "total_duration": 887266833,
+        "prompt_eval_duration": 612600000,
+        "eval_duration": 252889000
+      }
+    },
+    {
+      "case_id": "C07",
+      "arm": "localmind_context",
+      "category": "forget_confirmation_source",
+      "capture_mode": "explicit_state",
+      "utf8_bytes": 2315,
+      "retrieval_latency_ms": 1.31,
+      "answer": "{\n  \"backend\": null\n}",
+      "expected": {
+        "backend": null
+      },
+      "judgment": {
+        "passed": true,
+        "parsed": {
+          "backend": null
+        },
+        "errors": []
+      },
+      "model_latency_ms": 963.572,
+      "usage": {
+        "prompt_eval_count": 450,
+        "eval_count": 10,
+        "load_duration": 5479459,
+        "total_duration": 961635542,
+        "prompt_eval_duration": 518462999,
+        "eval_duration": 432720000
+      }
+    }
+  ],
+  "accounting": {
+    "model_calls_attempted_including_warmup": 56,
+    "completed_transport_calls": 56,
+    "calls_with_unknown_usage": 0,
+    "known_input_tokens": 27901,
+    "known_output_tokens": 521,
+    "input_tokens": 27901,
+    "output_tokens": 521,
+    "warmup_included": true,
+    "jobs_planned": 55,
+    "job_results_recorded": 55,
+    "cloud_model_calls_by_runner": 0,
+    "note": "Unknown usage remains unknown; known_* totals are partial when any call is unknown."
+  },
+  "warmup": {
+    "status": "completed",
+    "model_called": true,
+    "text": "就绪",
+    "done_reason": "stop",
+    "usage": {
+      "prompt_eval_count": 16,
+      "eval_count": 2,
+      "load_duration": 5979046375,
+      "total_duration": 6357662458,
+      "prompt_eval_duration": 297704000,
+      "eval_duration": 58338000
+    },
+    "latency_ms": 6384.547,
+    "error": null,
+    "started_at": "2026-10-21T06:32:40.428575+00:00",
+    "finished_at": "2026-10-21T06:32:46.814664+00:00"
+  },
+  "cleanup": {
+    "unloaded": true,
+    "remaining_models": 0,
+    "server_exit_code": 0,
+    "server_signal": null
+  },
+  "limits": [
+    "11 public synthetic development probes; not a held-out benchmark or generalized success rate",
+    "MCP calls selected by deterministic host; no autonomous host-tool-selection acceptance",
+    "Same schema/system/budget/model for all arms; state metadata only where fixture explicitly supplies it",
+    "Warm model keep-alive differs from the production adapters default unloading behavior",
+    "Cloud Codex and this current chat were not used as model backends",
+    "These are short-history probes, not a long-context benchmark",
+    "Token totals may cover unequal model-send counts because preparation failures remain in denominators"
+  ]
+}

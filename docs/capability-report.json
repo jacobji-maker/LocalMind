@@ -1,0 +1,328 @@
+{
+  "report_kind": "measured-development-capabilities",
+  "schema_version": "0.3",
+  "date": "2026-10-21",
+  "selected_adapter": "ollama-local",
+  "cloud_candidate": "Codex App Server",
+  "cloud_acceptance": "blocked",
+  "environment": {
+    "os": "macOS / Darwin 25.6.0",
+    "architecture": "arm64",
+    "device": "MacBook Air",
+    "chip": "Apple M5",
+    "memory_gb": 16,
+    "cpu_cores": 10,
+    "python": "3.9.6",
+    "sqlite": "3.51.0",
+    "git": "2.54.0",
+    "ollama_client": "0.40.3",
+    "ollama_server": "0.40.3",
+    "fts5_unicode61": "confirmed",
+    "fts5_trigram": "confirmed"
+  },
+  "github": {
+    "status": "confirmed",
+    "authenticated_login": "jacobji-maker",
+    "installed_repository_search": "confirmed",
+    "localmind_repository_found": true,
+    "note": "Authenticated owner, admin/push permission and public repository metadata verified before publishing the audited source snapshot.",
+    "visibility": "public",
+    "repository": "jacobji-maker/LocalMind"
+  },
+  "runtime": {
+    "core_dependencies": "Python standard library only",
+    "python_sdk": "not_installed",
+    "sdk_minimum_version_compatibility": "Python SDK needs a separate newer environment; this run did not install it",
+    "single_writer": "POSIX process file lock plus short RLock-serialized SQLite transactions",
+    "background_scheduler": "not_implemented"
+  },
+  "auth_kind": {
+    "ollama": "none on temporary loopback server",
+    "codex": "unknown",
+    "credential_files_read": false,
+    "global_configuration_modified": false
+  },
+  "context_ownership": {
+    "ollama_application_messages": "full",
+    "codex": "unknown",
+    "meaning": "full concerns explicit application conversation history, not the server's hidden prompt template"
+  },
+  "observability": {
+    "local_packet": "confirmed",
+    "actual_ollama_http_messages": "confirmed",
+    "ollama_token_usage": "confirmed",
+    "server_internal_tokenized_prompt": "unknown",
+    "codex_rpc_input": "unknown",
+    "codex_host_history": "unknown",
+    "codex_final_model_request": "unknown"
+  },
+  "locality": {
+    "storage": "confirmed",
+    "embedding": "unsupported",
+    "planner": "confirmed",
+    "consolidation": "unsupported",
+    "local_answer_model": "confirmed",
+    "cloud_answer_backend": "unknown"
+  },
+  "model": {
+    "name": "qwen3.5:9b",
+    "digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+    "size_bytes": 6594474711,
+    "format": "gguf",
+    "quantization": "Q4_K_M",
+    "parameters": "9.7B",
+    "remote_host": null,
+    "remote_model": null,
+    "cloud_disabled_for_live_test": true,
+    "planner_cold_latency_ms": 7438.46,
+    "planner_foreground_budget_ms": 5000,
+    "planner_meets_cold_budget": false,
+    "planner_default": "disabled",
+    "other_installed_but_not_inferred": [
+      "gemma4:12b"
+    ],
+    "note": "Locality is verified for this exact tested model and temporary no-cloud server; a loopback address or an arbitrary alias alone is not proof."
+  },
+  "tool_surface": {
+    "ollama": {
+      "definitions_sent": false,
+      "executor_present": false,
+      "unexpected_tool_calls": "rejected",
+      "shell_execution": "unsupported",
+      "mcp_execution": "unsupported",
+      "apps_execution": "unsupported",
+      "direct_host_rpc": "unsupported"
+    },
+    "codex": {
+      "shell": "unknown",
+      "web_search": "unknown",
+      "mcp": "unknown",
+      "apps_plugins": "unknown",
+      "dynamic_tools": "unknown",
+      "direct_host_rpc": "unknown"
+    }
+  },
+  "checks": [
+    {
+      "id": "runtime",
+      "status": "confirmed",
+      "evidence_level": "machine_measured",
+      "evidence": [
+        "Python and SQLite commands executed",
+        "system_profiler hardware output",
+        "100 development tests"
+      ]
+    },
+    {
+      "id": "local_model",
+      "status": "confirmed",
+      "evidence_level": "real_inference",
+      "evidence": [
+        "Native /api/tags and /api/version returned metadata",
+        "One real answer and one structured planner request succeeded",
+        "Cloud disabled in temporary server process"
+      ]
+    },
+    {
+      "id": "local_history_exclusion",
+      "status": "confirmed",
+      "evidence_level": "captured_transport_messages",
+      "evidence": [
+        "Stateless /api/chat bodies contain only compiler-selected application messages",
+        "No previous response/session/context handle is supplied",
+        "Actual messages saved in real-local-demo.json"
+      ]
+    },
+    {
+      "id": "local_behavior",
+      "status": "confirmed",
+      "evidence_level": "development_scenario",
+      "evidence": [
+        "Final five-turn local trial retained option two/file and latest two-hour requirement across Store restart",
+        "After forgetting the choice, the model stated that no backend confirmation survived"
+      ],
+      "limitation": "Prompt and system wording were revised after a failed development trial. This is not held-out acceptance."
+    },
+    {
+      "id": "local_planner_speed",
+      "status": "unsupported",
+      "evidence_level": "one_cold_measurement",
+      "evidence": [
+        "7438.46ms exceeds the 5000ms planner budget"
+      ],
+      "limitation": "No general speed or quality claim; warm inference and smaller models not measured."
+    },
+    {
+      "id": "codex_executable",
+      "status": "confirmed",
+      "evidence_level": "machine_measured",
+      "evidence": [
+        "Resources/codex-cli is a directory; the former EACCES probe executed a directory, not a binary",
+        "/Applications/ChatGPT.app/Contents/Resources/codex-cli/bin/codex --version returned codex-cli 0.163.0-alpha.10.2",
+        "app-server --help and generate-json-schema --experimental completed successfully"
+      ],
+      "limitation": "Executable and schema discovery do not prove running protocol, authentication, or tool restrictions"
+    },
+    {
+      "id": "codex_auth_protocol_tools",
+      "status": "unknown",
+      "evidence_level": "bounded_live_probe_failed",
+      "evidence": [
+        "App Server stdio exits before initialize: default SQLite runtime path is outside writable sandbox",
+        "Documented sqlite_home/log_dir invocation-only overrides to temporary writable state then produce EPERM exit code 1",
+        "Both regular and --no-daemon invocations were bounded to four seconds and reaped",
+        "New reusable probe confirms version and process_exited exit_code=1; no thread/start or turn/start is sent",
+        "No authentication category or actual tool-disable evidence obtained; cloud model calls remain zero"
+      ]
+    },
+    {
+      "id": "hooks",
+      "status": "unknown",
+      "evidence_level": "not_measured",
+      "evidence": [
+        "No global Hook configuration changes made"
+      ]
+    },
+    {
+      "id": "recovery_correction_deletion",
+      "status": "confirmed",
+      "evidence_level": "synthetic_tests",
+      "evidence": [
+        "Scope/subject/epoch barriers, direct+root dependency deletion, cross-session late completion, fixed option anchors, unknown outcomes and token-limited output covered by tests"
+      ]
+    },
+    {
+      "id": "mcp_stdio_plugin",
+      "status": "confirmed",
+      "evidence_level": "actual_subprocess_integration_tests",
+      "evidence": [
+        "74 development tests passed",
+        "Generated launcher works from a different cwd",
+        "Pause, correction, forgetting and cross-project access verified"
+      ],
+      "limitation": "Protocol client is a synthetic test driver; actual native host loading and automatic capture not yet verified"
+    }
+  ],
+  "accounting": {
+    "real_local_model_calls": 123,
+    "local_prompt_tokens": 72937,
+    "local_generated_tokens": 2077,
+    "cloud_model_calls": 0,
+    "background_inference_calls": 0,
+    "usage_source": "Measured Ollama counts: 12 initial calls + 55 historical contrast calls + 56 version 0.5 contrast calls, warmups included; no unknown usage.",
+    "provider_api_charge_incurred_by_project": false,
+    "whole_application_account_usage": "unknown"
+  },
+  "cleanup": {
+    "temporary_server_port": 11436,
+    "unloaded": true,
+    "remaining_models": 0,
+    "server_exit_code": 0,
+    "server_signal": null,
+    "downloaded_models": 0,
+    "global_config_changes": 0
+  },
+  "blockers": [
+    "Codex cloud integration has a callable client, but App Server startup and verified tool boundary remain blocked",
+    "The existing 9B model did not meet the cold foreground planner latency target",
+    "General automatic natural-language correction mapping and held-out A/B/C product evaluation remain open"
+  ],
+  "evidence_files": [
+    "validation-report.json",
+    "local-model-probe.json",
+    "initial-real-local-demo.json",
+    "real-local-demo.json",
+    "CODEX_INTEGRATION.md",
+    "contrast-requests-0.5.json",
+    "contrast-responses-0.5.json",
+    "contrast-report-0.5.json"
+  ],
+  "notes": [
+    "Replay is explicitly simulated.",
+    "100 tests are development invariants, separate from the 42 unexecuted public semantic seed cases.",
+    "No final provider-internal prompt inspection or production quality claim is made.",
+    "2026-10-21 follow-up corrected the old executable-path mistake; prior EACCES evidence is not a valid proof that the supported CLI is blocked."
+  ],
+  "codex_client": {
+    "executable": "/Applications/ChatGPT.app/Contents/Resources/codex-cli/bin/codex",
+    "version": "0.163.0-alpha.10.2",
+    "schema_generation": "confirmed",
+    "schema_thread_start_fields": [
+      "ephemeral",
+      "dynamicTools",
+      "environments",
+      "config",
+      "developerInstructions"
+    ],
+    "schema_turn_start_fields": [
+      "input",
+      "additionalContext",
+      "environments"
+    ],
+    "schema_limits": [
+      "disabledPluginIds explicitly does not yet filter plugin capabilities",
+      "No global action-tool allowlist or final model tool inventory was found in the generated App Server protocol"
+    ],
+    "initialize": "unknown",
+    "last_probe_outcome": "process_exited",
+    "last_probe_exit_code": 1,
+    "cloud_turns_started": 0,
+    "diagnostic_module": "localmind.codex_adapter",
+    "answer_send_gate": "CODEX_TOOL_BOUNDARY_UNVERIFIED"
+  },
+  "application_version": "0.5.0",
+  "mcp_plugin": {
+    "status": "confirmed",
+    "evidence_level": "actual_subprocess_stdio",
+    "protocol_version": "2025-06-18",
+    "tools": [
+      "localmind_state",
+      "localmind_search",
+      "localmind_expand",
+      "localmind_recall"
+    ],
+    "scope": "pinned_at_startup",
+    "capture": "trusted_CLI_only",
+    "host_installation": "not_performed",
+    "native_codex_host_acceptance": "not_run",
+    "automatic_capture_hook": "not_implemented",
+    "configuration_generator": "verified_from_different_working_directory"
+  },
+  "current_validation": {
+    "tests_run": 100,
+    "passed": true,
+    "real_contrast_cases": 11,
+    "real_contrast_model_calls_including_warmup": 56,
+    "preparation_budget_failures": 0,
+    "report": "contrast-report-0.5.json",
+    "product_acceptance": "not_passed",
+    "native_host_acceptance": "not_run"
+  },
+  "effects": {
+    "full_valid_history": "11/11",
+    "recent_history": "9/11",
+    "no_memory": "3/11",
+    "localmind_context": "10/11",
+    "localmind_mcp": "11/11",
+    "conclusion": "Same 11 visible development fixtures after fixes; no held-out or native-host acceptance. MCP uses 1.475x the full-history input tokens on these short histories."
+  },
+  "publication_target": {
+    "repository": "jacobji-maker/LocalMind",
+    "visibility": "public",
+    "status": "public_repository_verified"
+  },
+  "current_run_accounting": {
+    "model_calls_attempted_including_warmup": 56,
+    "completed_transport_calls": 56,
+    "calls_with_unknown_usage": 0,
+    "known_input_tokens": 27901,
+    "known_output_tokens": 521,
+    "input_tokens": 27901,
+    "output_tokens": 521,
+    "warmup_included": true,
+    "jobs_planned": 55,
+    "job_results_recorded": 55,
+    "cloud_model_calls_by_runner": 0,
+    "note": "Unknown usage remains unknown; known_* totals are partial when any call is unknown."
+  }
+}

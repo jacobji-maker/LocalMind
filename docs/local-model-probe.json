@@ -1,0 +1,40 @@
+{
+  "kind": "real-local-inference",
+  "model": "qwen3.5:9b",
+  "cloud_disabled": true,
+  "answer": {
+    "text": "已接通。",
+    "message_id": "ollama-c9a2923ea1ed4f10b4a7346934a7bd06",
+    "remote_thread_id": null,
+    "request_mode": "stateless",
+    "usage": {
+      "prompt_eval_count": 23,
+      "eval_count": 4,
+      "total_duration": 9439768000,
+      "load_duration": 8435448125,
+      "prompt_eval_duration": 795366000,
+      "eval_duration": 194101000
+    },
+    "latency_ms": 9460.35,
+    "simulated": false,
+    "adapter": "ollama-local",
+    "model": "qwen3.5:9b"
+  },
+  "selection": {
+    "selected_ids": [
+      "cache"
+    ],
+    "query_terms": [
+      "缓存",
+      "有效期"
+    ]
+  },
+  "planner_usage": {
+    "prompt_eval_count": 120,
+    "eval_count": 19,
+    "total_duration": 7388409959,
+    "load_duration": 5240276917
+  },
+  "planner_latency_ms": 7438.46,
+  "total_elapsed_s": 16.903
+}

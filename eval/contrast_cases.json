@@ -1,0 +1,652 @@
+{
+  "fixture_version": "1.0",
+  "frozen_date": "2026-10-21",
+  "status": "frozen_before_first_live_comparison; synthetic development evaluation, not held-out acceptance",
+  "shared_instruction": "你在做有来源的项目记忆问答。只依据提供的当前问题和仍有效的历史资料回答，不补写缺失事实。用户的新明确纠正优先于旧说法；助手提议不能视为用户确认。不存在依据时相应字段填 null。只返回一个符合要求的 JSON 对象，不加解释、Markdown 或额外字段；名称尽量沿用原文，数值按问题指定单位换算。",
+  "history_semantics": {
+    "user": "A synthetic original user input, captured verbatim.",
+    "assistant": "Optional predefined synthetic assistant history, not a real model inference or verified tool result.",
+    "changes": "Trusted explicit subject metadata available only in explicit_state cases. Capture-only cases intentionally have none.",
+    "default_scope": "case.scope, unless project_id/task_id explicitly overrides it for a separate authorized fixture project.",
+    "operations": "Apply forgetting and scope restrictions equally to all reference/baseline arms; never send deleted or foreign original text merely to make baselines fail."
+  },
+  "recommended_arms": [
+    {
+      "id": "no_memory",
+      "definition": "Shared instruction + question only. Negative control, not the principal comparator."
+    },
+    {
+      "id": "recent_history",
+      "definition": "Same instruction + last 2 authorized surviving history turns + question; fixed window for every case."
+    },
+    {
+      "id": "full_valid_history",
+      "definition": "Same instruction + all authorized surviving original history + question within the same input byte budget; reference ceiling for these short fixtures."
+    },
+    {
+      "id": "localmind_mcp",
+      "definition": "Same instruction + actual MCP state/search/needed source expansion results + question; deterministic host recall policy, not autonomous model tool-use acceptance."
+    }
+  ],
+  "scoring": "One pass requires exact expected keys and values, with the optional per-field accepted_values aliases. Do not coerce booleans to integers. Parse/shape/truncation/transport failures are failures and remain in denominators. Save raw responses and usage. Full-history reference is not a naive append baseline; deletion/scope must be applied to it.",
+  "cases": [
+    {
+      "id": "C01",
+      "category": "cross_session_longer_history",
+      "capture_mode": "explicit_state",
+      "scope": {
+        "project_id": "contrast-project",
+        "task_id": "main"
+      },
+      "history": [
+        {
+          "user": "这个项目的存储后端确定为 SQLite，回答语言采用中文。",
+          "assistant": "已记录这两项明确要求。",
+          "changes": [
+            {
+              "subject_key": "backend",
+              "value": "SQLite",
+              "kind": "decision",
+              "scope_level": "task"
+            },
+            {
+              "subject_key": "language",
+              "value": "中文",
+              "kind": "requirement",
+              "scope_level": "task"
+            }
+          ],
+          "session_id": "old-session"
+        },
+        {
+          "user": "先单独讨论一个无关小问题：日报第1页的标题先保留，正文以后再写。",
+          "assistant": "可以，正文暂不展开。"
+        },
+        {
+          "user": "先单独讨论一个无关小问题：日报第2页的标题先保留，正文以后再写。",
+          "assistant": "可以，正文暂不展开。"
+        },
+        {
+          "user": "先单独讨论一个无关小问题：日报第3页的标题先保留，正文以后再写。",
+          "assistant": "可以，正文暂不展开。"
+        },
+        {
+          "user": "先单独讨论一个无关小问题：日报第4页的标题先保留，正文以后再写。",
+          "assistant": "可以，正文暂不展开。"
+        },
+        {
+          "user": "先单独讨论一个无关小问题：日报第5页的标题先保留，正文以后再写。",
+          "assistant": "可以，正文暂不展开。"
+        },
+        {
+          "user": "先单独讨论一个无关小问题：日报第6页的标题先保留，正文以后再写。",
+          "assistant": "可以，正文暂不展开。"
+        },
+        {
+          "user": "先单独讨论一个无关小问题：日报第7页的标题先保留，正文以后再写。",
+          "assistant": "可以，正文暂不展开。"
+        },
+        {
+          "user": "先单独讨论一个无关小问题：日报第8页的标题先保留，正文以后再写。",
+          "assistant": "可以，正文暂不展开。"
+        },
+        {
+          "user": "先单独讨论一个无关小问题：日报第9页的标题先保留，正文以后再写。",
+          "assistant": "可以，正文暂不展开。"
+        },
+        {
+          "user": "先单独讨论一个无关小问题：日报第10页的标题先保留，正文以后再写。",
+          "assistant": "可以，正文暂不展开。"
+        },
+        {
+          "user": "先单独讨论一个无关小问题：日报第11页的标题先保留，正文以后再写。",
+          "assistant": "可以，正文暂不展开。"
+        },
+        {
+          "user": "先单独讨论一个无关小问题：日报第12页的标题先保留，正文以后再写。",
+          "assistant": "可以，正文暂不展开。"
+        }
+      ],
+      "question": "换了一个会话继续。已确认的存储后端是什么？回答语言是什么？返回 backend 和 language。",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "backend": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "language": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "backend",
+          "language"
+        ],
+        "additionalProperties": false
+      },
+      "expected": {
+        "backend": "SQLite",
+        "language": "中文"
+      }
+    },
+    {
+      "id": "C02",
+      "category": "explicit_correction",
+      "capture_mode": "explicit_state",
+      "scope": {
+        "project_id": "contrast-project",
+        "task_id": "main"
+      },
+      "history": [
+        {
+          "user": "缓存有效期设置为24小时。",
+          "assistant": "收到。",
+          "changes": [
+            {
+              "subject_key": "ttl",
+              "value": "24小时",
+              "kind": "requirement",
+              "scope_level": "task"
+            }
+          ]
+        },
+        {
+          "user": "把缓存有效期改成90分钟，旧值不用了。",
+          "assistant": "收到。",
+          "changes": [
+            {
+              "subject_key": "ttl",
+              "value": "90分钟",
+              "kind": "requirement",
+              "scope_level": "task"
+            }
+          ]
+        },
+        {
+          "user": "下次先看日志格式，暂不调整缓存。",
+          "assistant": "收到。"
+        }
+      ],
+      "question": "当前缓存有效期是多少分钟？返回 ttl_minutes。",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "ttl_minutes": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "ttl_minutes"
+        ],
+        "additionalProperties": false
+      },
+      "expected": {
+        "ttl_minutes": 90
+      }
+    },
+    {
+      "id": "C03",
+      "category": "natural_correction_without_subject_parser",
+      "capture_mode": "capture_only",
+      "scope": {
+        "project_id": "contrast-project",
+        "task_id": "main"
+      },
+      "history": [
+        {
+          "user": "缓存寿命定为24小时。",
+          "assistant": "收到。"
+        },
+        {
+          "user": "改成90分钟，刚才那个数值不算。",
+          "assistant": "收到。"
+        },
+        {
+          "user": "我们先准备测试，再讨论界面。",
+          "assistant": "收到。"
+        }
+      ],
+      "question": "现在缓存寿命是多少分钟？返回 ttl_minutes。",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "ttl_minutes": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "ttl_minutes"
+        ],
+        "additionalProperties": false
+      },
+      "expected": {
+        "ttl_minutes": 90
+      },
+      "limitation_probe": "No changes metadata is supplied. Do not credit explicit-state guarantees to this path."
+    },
+    {
+      "id": "C04",
+      "category": "ordinal_choice_reference",
+      "capture_mode": "explicit_state",
+      "scope": {
+        "project_id": "contrast-project",
+        "task_id": "main"
+      },
+      "history": [
+        {
+          "user": "给我三个本地后端选项。",
+          "assistant": "方案一：SQLite。方案二：文件。方案三：内存。"
+        },
+        {
+          "user": "选第二个。",
+          "assistant": "按你的选择继续。",
+          "changes": [
+            {
+              "subject_key": "backend",
+              "value": "第二个",
+              "kind": "decision",
+              "scope_level": "task"
+            }
+          ]
+        },
+        {
+          "user": "展示时只保留名称，不做额外解释。",
+          "assistant": "收到。"
+        }
+      ],
+      "question": "用户最终选择的后端名称是什么？返回 backend。",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "backend": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "backend"
+        ],
+        "additionalProperties": false
+      },
+      "expected": {
+        "backend": "文件"
+      }
+    },
+    {
+      "id": "C05",
+      "category": "assistant_proposal_is_not_confirmation",
+      "capture_mode": "capture_only",
+      "scope": {
+        "project_id": "contrast-project",
+        "task_id": "main"
+      },
+      "history": [
+        {
+          "user": "请比较 SQLite 和文件两种后端。",
+          "assistant": "我建议 SQLite，但这只是建议，需要你确认。"
+        },
+        {
+          "user": "先讨论测试，后端以后再定。",
+          "assistant": "可以，先讨论测试。"
+        }
+      ],
+      "question": "用户最终确认的后端是什么？只算用户确认；没有确认时 backend 为 null。",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "backend": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "backend"
+        ],
+        "additionalProperties": false
+      },
+      "expected": {
+        "backend": null
+      }
+    },
+    {
+      "id": "C06",
+      "category": "conditional_permission_and_negation",
+      "capture_mode": "explicit_state",
+      "scope": {
+        "project_id": "contrast-project",
+        "task_id": "main"
+      },
+      "history": [
+        {
+          "user": "仅当备份恢复验证通过才允许修改数据库；目前尚未验证。",
+          "assistant": "先等待验证结果。",
+          "changes": [
+            {
+              "subject_key": "modify_permission",
+              "value": "允许修改数据库",
+              "kind": "requirement",
+              "scope_level": "task"
+            },
+            {
+              "subject_key": "backup_status",
+              "value": "尚未验证",
+              "kind": "fact",
+              "scope_level": "task"
+            }
+          ]
+        },
+        {
+          "user": "脚本已经准备好，但不要把准备好等同于验证通过。",
+          "assistant": "收到。"
+        }
+      ],
+      "question": "根据目前明确记录，现在能修改数据库吗？有记录但条件未满足填 false，证据不足填 null。返回 can_modify。",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "can_modify": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "can_modify"
+        ],
+        "additionalProperties": false
+      },
+      "expected": {
+        "can_modify": false
+      }
+    },
+    {
+      "id": "C07",
+      "category": "forget_confirmation_source",
+      "capture_mode": "explicit_state",
+      "scope": {
+        "project_id": "contrast-project",
+        "task_id": "main"
+      },
+      "history": [
+        {
+          "user": "正式选用 SQLite 作为存储后端。",
+          "assistant": "已按你的确认记录。",
+          "changes": [
+            {
+              "subject_key": "backend",
+              "value": "SQLite",
+              "kind": "decision",
+              "scope_level": "task"
+            }
+          ]
+        },
+        {
+          "user": "稍后再看界面，先暂停讨论后端。",
+          "assistant": "收到。"
+        }
+      ],
+      "question": "根据仍然存在的用户确认，选中的后端是什么？没有有效确认时 backend 为 null。",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "backend": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "backend"
+        ],
+        "additionalProperties": false
+      },
+      "expected": {
+        "backend": null
+      },
+      "operations": [
+        {
+          "kind": "forget",
+          "history_index": 0
+        }
+      ]
+    },
+    {
+      "id": "C08",
+      "category": "project_scope_isolation",
+      "capture_mode": "explicit_state",
+      "scope": {
+        "project_id": "contrast-project",
+        "task_id": "main"
+      },
+      "history": [
+        {
+          "user": "本项目负责人是林珊。",
+          "assistant": "收到。",
+          "changes": [
+            {
+              "subject_key": "owner",
+              "value": "林珊",
+              "kind": "fact",
+              "scope_level": "task"
+            }
+          ]
+        },
+        {
+          "user": "另一个项目负责人是周宁。",
+          "assistant": "收到。",
+          "changes": [
+            {
+              "subject_key": "owner",
+              "value": "周宁",
+              "kind": "fact",
+              "scope_level": "task"
+            }
+          ],
+          "project_id": "foreign-project"
+        },
+        {
+          "user": "当前只讨论页面排版，负责人不调整。",
+          "assistant": "收到。"
+        }
+      ],
+      "question": "当前 contrast-project 项目的负责人是谁？返回 owner。",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "owner"
+        ],
+        "additionalProperties": false
+      },
+      "expected": {
+        "owner": "林珊"
+      }
+    },
+    {
+      "id": "C09",
+      "category": "semantic_alias_without_literal_overlap",
+      "capture_mode": "capture_only",
+      "scope": {
+        "project_id": "contrast-project",
+        "task_id": "main"
+      },
+      "history": [
+        {
+          "user": "客户把通知渠道定为电子邮件。",
+          "assistant": "收到。"
+        },
+        {
+          "user": "先处理一下页面边距。",
+          "assistant": "可以先调整页面排版。"
+        }
+      ],
+      "question": "给对方发消息用什么方式？按已确定的原值返回 channel。",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "channel": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "channel"
+        ],
+        "additionalProperties": false
+      },
+      "expected": {
+        "channel": "电子邮件"
+      },
+      "accepted_values": {
+        "channel": [
+          "电子邮件",
+          "邮件",
+          "email",
+          "Email"
+        ]
+      },
+      "limitation_probe": "No subject metadata, aliases or embeddings. Literal query terms have no overlap with the relevant original."
+    },
+    {
+      "id": "C10",
+      "category": "numeric_units_and_limits",
+      "capture_mode": "explicit_state",
+      "scope": {
+        "project_id": "contrast-project",
+        "task_id": "main"
+      },
+      "history": [
+        {
+          "user": "网络请求超时设为2.5秒，最多重试2次。",
+          "assistant": "收到。",
+          "changes": [
+            {
+              "subject_key": "timeout",
+              "value": "2.5秒",
+              "kind": "requirement",
+              "scope_level": "task"
+            },
+            {
+              "subject_key": "retries",
+              "value": "2次",
+              "kind": "requirement",
+              "scope_level": "task"
+            }
+          ]
+        },
+        {
+          "user": "错误消息以后再润色，网络参数保持不变。",
+          "assistant": "收到。"
+        }
+      ],
+      "question": "请求超时是多少毫秒？最多重试几次？返回 timeout_ms 和 retries。",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "timeout_ms": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "retries": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "timeout_ms",
+          "retries"
+        ],
+        "additionalProperties": false
+      },
+      "expected": {
+        "timeout_ms": 2500,
+        "retries": 2
+      }
+    },
+    {
+      "id": "C11",
+      "category": "irrelevant_memory_should_not_fill_missing_fact",
+      "capture_mode": "explicit_state",
+      "scope": {
+        "project_id": "contrast-project",
+        "task_id": "main"
+      },
+      "history": [
+        {
+          "user": "界面使用浅色主题。",
+          "assistant": "收到。",
+          "changes": [
+            {
+              "subject_key": "theme",
+              "value": "浅色",
+              "kind": "requirement",
+              "scope_level": "task"
+            }
+          ]
+        },
+        {
+          "user": "日志保留7天。",
+          "assistant": "收到。",
+          "changes": [
+            {
+              "subject_key": "retention",
+              "value": "7天",
+              "kind": "requirement",
+              "scope_level": "task"
+            }
+          ]
+        }
+      ],
+      "question": "已确定的支付供应商叫什么？如果没有讨论过，payment_provider 为 null。",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "payment_provider": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "payment_provider"
+        ],
+        "additionalProperties": false
+      },
+      "expected": {
+        "payment_provider": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,95 @@
+{
+  "generated_at": "2026-10-21T06:04:50.337203+00:00",
+  "kind": "synthetic-adversarial-development-reproductions",
+  "real_model_calls": 0,
+  "cases": [
+    {
+      "id": "tail-keyword-truncated-at-512",
+      "status": "fixed",
+      "original_reproduction": {
+        "older_fact": "玄鲸服务的恢复口令为AZ-481。",
+        "subsequent_unrelated_captures": 205,
+        "current_input_characters": 575,
+        "keyword_after_character": 512
+      },
+      "before": {
+        "long_question_recalled_fact": false,
+        "same_short_question_recalled_fact": true
+      },
+      "after": {
+        "regression_passed": true,
+        "original_user_input_preserved": true
+      },
+      "regression_test": "tests.test_adversarial.AdversarialTests.test_lookup_keyword_after_long_background_can_recall_old_original"
+    },
+    {
+      "id": "unsent-compiled-restart-deadlock",
+      "status": "fixed",
+      "original_reproduction": "receive -> compile -> record_context -> close -> reopen -> retry same key -> submit new key",
+      "before": {
+        "same_key_send": false,
+        "same_key_phase": "compiled",
+        "new_input_error": "TurnBusy"
+      },
+      "after": {
+        "interrupted_received_and_compiled_phase": "cancelled",
+        "error": "RESTART_UNSENT_INTERRUPTED",
+        "same_key_retry_sends": false,
+        "new_key_input_allowed": true,
+        "sent_unknown_auto_retry": false,
+        "paused_capture_preserved": true
+      },
+      "regression_tests": [
+        "tests.test_adversarial.AdversarialTests.test_restart_terminates_unsent_work_without_replaying_and_unblocks_new_input",
+        "tests.test_adversarial.AdversarialTests.test_reopening_interrupted_input_does_not_resume_paused_capture"
+      ]
+    },
+    {
+      "id": "long-unrelated-previous-answer-budget-stall",
+      "status": "fixed",
+      "original_reproduction": {
+        "prior_assistant_text": "历史长回答。 repeated 1000 times",
+        "prior_budget_utf8_bytes": 40000,
+        "new_input": "现在仅回答独立算式：2+2等于几？",
+        "new_budget_utf8_bytes": 12288
+      },
+      "before": {
+        "new_input_error": "BudgetInsufficient"
+      },
+      "after": {
+        "unreferenced_exchange_omitted_for_budget": true,
+        "new_input_delivered": true,
+        "referential_followup_still_fails_budget_instead_of_dropping_antecedent": true
+      },
+      "regression_tests": [
+        "tests.test_adversarial.AdversarialTests.test_long_previous_answer_does_not_block_unrelated_new_question",
+        "tests.test_adversarial.AdversarialTests.test_long_referenced_answer_fails_budget_instead_of_dropping_antecedent"
+      ],
+      "limitation": "Referential detection is a deterministic lexical heuristic, not complete natural-language understanding."
+    },
+    {
+      "id": "plain-natural-correction-after-explicit-state",
+      "status": "limitation",
+      "documented_supported_path": "Use trusted explicit subject updates for confirmed corrections.",
+      "evidence": {
+        "initial_explicit_input": "缓存有效期24小时",
+        "natural_input_without_changes_metadata": "不对，缓存改为2小时",
+        "observed_active_ttl": "24小时",
+        "correction_original_saved": true
+      },
+      "impact": "The raw correction survives, but the structured current subject still says 24小时. A caller that sends only state can therefore present an outdated requirement.",
+      "fixed": false
+    }
+  ],
+  "controls": {
+    "shared_source_partial_correction": "passed",
+    "old_original_role": "historical_source",
+    "scope_of_claim": "deterministic state/messages and replay transport; no native-host or model-quality conclusion"
+  },
+  "regression_suite": {
+    "module": "tests.test_adversarial",
+    "tests_run": 6,
+    "passed": 6,
+    "failed": 0
+  }
+}
